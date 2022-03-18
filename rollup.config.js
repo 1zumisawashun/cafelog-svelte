@@ -47,7 +47,8 @@ export default {
   },
   plugins: [
     replace({
-      // アプリから process.env が利用できなかったので 例）API_KEY という名前が使われた場合に replace する処理を追加
+      preventAssignment: true,
+      // NOTE:アプリから process.env が利用できなかったので 例）API_KEY という名前が使われた場合に replace する処理を追加
       'process.env.API_KEY': JSON.stringify(process.env.API_KEY),
       'process.env.AUTH_DOMAIN': JSON.stringify(process.env.AUTH_DOMAIN),
       'process.env.PROJECT_ID': JSON.stringify(process.env.PROJECT_ID),
@@ -81,7 +82,8 @@ export default {
     }),
     commonjs(),
     typescript({
-      sourceMap: !production,
+      // sourceMap: !production,
+      sourceMap: true,
       inlineSources: !production,
     }),
 

@@ -20,14 +20,12 @@ jobs:
       - run:
           name: node_modulesのインストール
           command: |
-            npm i && cd functions && npm i
+            npm install
             ls -al
       - run:
           name: ビルド
           command: |
             npm run build
-            ls -al
-            cd functions && npm run build
             ls -al
       - run:
           name: buildフォルダの確認
