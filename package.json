@@ -13,10 +13,12 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
+    "@rollup/plugin-replace": "^4.0.0",
     "@rollup/plugin-typescript": "^8.0.0",
     "@tsconfig/svelte": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^5.15.0",
     "@typescript-eslint/parser": "^5.15.0",
+    "dotenv": "^16.0.0",
     "eslint": "^8.11.0",
     "eslint-plugin-svelte3": "^3.4.1",
     "prettier": "^2.6.0",
@@ -34,6 +36,7 @@
     "typescript": "^4.0.0"
   },
   "dependencies": {
-    "sirv-cli": "^2.0.0"
+    "sirv-cli": "^2.0.0",
+    "firebase": "8.5"
   }
 }

@@ -1,5 +1,7 @@
 <script lang="ts">
+import { timestamp } from './firebase/config';
 export let name: string;
+console.log(timestamp, 'timestamp');
 </script>
 
 <main>
