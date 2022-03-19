@@ -6,7 +6,9 @@ import { terser } from 'rollup-plugin-terser';
 import sveltePreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
 import css from 'rollup-plugin-css-only';
+// NOTE:下記から手動で追加
 import replace from '@rollup/plugin-replace';
+import scss from 'rollup-plugin-scss';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -46,7 +48,9 @@ export default {
     file: 'public/build/bundle.js',
   },
   plugins: [
+    scss(),
     replace({
+      // NOTE:buildの際に下記を追加する必要があったため記述
       preventAssignment: true,
       // NOTE:アプリから process.env が利用できなかったので 例）API_KEY という名前が使われた場合に replace する処理を追加
       'process.env.API_KEY': JSON.stringify(process.env.API_KEY),
@@ -59,18 +63,8 @@ export default {
       'process.env.APP_ID': JSON.stringify(process.env.APP_ID),
     }),
     svelte({
-      // NOTE:Plugin svelte: Unused CSS selectorのアラートを削除
-      onwarn: (warning, handler) => {
-        const { code, frame } = warning;
-        if (code === 'css-unused-selector') return;
-        handler(warning);
-      },
       preprocess: sveltePreprocess({
         sourceMap: !production,
-        // NOTE:グローバルでsassを読み込む
-        scss: {
-          prependData: `@import './assets/scss/app.scss';`,
-        },
       }),
       compilerOptions: {
         // NOTE:svelte-routerでリダイレクト・ホットリロードさせるために設置
