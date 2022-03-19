@@ -59,6 +59,12 @@ export default {
       'process.env.APP_ID': JSON.stringify(process.env.APP_ID),
     }),
     svelte({
+      // NOTE:Plugin svelte: Unused CSS selectorのアラートを削除
+      onwarn: (warning, handler) => {
+        const { code, frame } = warning;
+        if (code === 'css-unused-selector') return;
+        handler(warning);
+      },
       preprocess: sveltePreprocess({
         sourceMap: !production,
       }),

@@ -11,7 +11,8 @@ console.log(timestamp, 'timestamp');
 </script>
 
 <main>
-  <h1 class="-blue">Hello {name}!</h1>
+  <h1 class="-blue _mt-10">Hello {name}!</h1>
+  <h2 class="-blue">Hello</h2>
   <Router>
     <nav>
       <Link to="">home</Link>
@@ -41,6 +42,7 @@ console.log(timestamp, 'timestamp');
 </main>
 
 <style lang="scss">
+@import '../assets/scss/app.scss';
 main {
   text-align: center;
   padding: 1em;
