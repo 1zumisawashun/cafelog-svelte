@@ -1,4 +1,10 @@
 <script lang="ts">
+import { Router, Link, Route } from 'svelte-routing';
+import Home from './pages/Home.svelte';
+import About from './pages/About.svelte';
+import Post from './pages/Post.svelte';
+import Search from './pages/Search.svelte';
+import User from './pages/User.svelte';
 import { timestamp } from './firebase/config';
 export let name: string;
 console.log(timestamp, 'timestamp');
@@ -6,14 +12,33 @@ console.log(timestamp, 'timestamp');
 
 <main>
   <h1 class="-blue">Hello {name}!</h1>
-  <p>
-    Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn
-    how to build Svelte apps.
-  </p>
+  <Router>
+    <nav>
+      <Link to="">home</Link>
+      <Link to="/about">about</Link>
+      <Link to="/post">post</Link>
+      <Link to="/search">search</Link>
+      <Link to="/users/123">users</Link>
+    </nav>
+    <main>
+      <Route path="">
+        <Home />
+      </Route>
+      <Route path="/about">
+        <About />
+      </Route>
+      <Route path="/post">
+        <Post />
+      </Route>
+      <Route path="/search">
+        <Search />
+      </Route>
+      <Route path="/users/:id" let:params>
+        <User id="{params.id}" />
+      </Route>
+    </main>
+  </Router>
 </main>
-<span
-  ><div>foo</div>
-  <span>bar</span></span>
 
 <style lang="scss">
 main {

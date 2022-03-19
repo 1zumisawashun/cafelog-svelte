@@ -63,6 +63,8 @@ export default {
         sourceMap: !production,
       }),
       compilerOptions: {
+        // NOTE:svelte-routerでリダイレクト・ホットリロードさせるために設置
+        hydratable: true,
         // enable run-time checks when not in production
         dev: !production,
       },

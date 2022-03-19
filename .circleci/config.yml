@@ -28,9 +28,6 @@ jobs:
             npm run build
             ls -al
       - run:
-          name: buildフォルダの確認
-          command: ls -la build
-      - run:
           name: firebase-toolsのインストール
           command: |
             npm install --dev firebase-tools
