@@ -4,6 +4,9 @@ import { Router, Link, Route } from 'svelte-routing';
 
 <div class="common-header-container">
   <Router>
+    <div class="logo">
+      <img src="logo.jpg" alt="" />
+    </div>
     <nav class="navbar">
       <Link to="">home</Link>
       <Link to="/about">about</Link>

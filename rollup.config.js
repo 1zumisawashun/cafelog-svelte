@@ -11,6 +11,7 @@ import replace from '@rollup/plugin-replace';
 import scss from 'rollup-plugin-scss';
 import dotenv from 'dotenv';
 dotenv.config();
+// FIXME:.svelte以外でホットリロードが走らない
 
 const production = !process.env.ROLLUP_WATCH;
 
