@@ -1,18 +1,16 @@
 <script lang="ts">
 import { Router, Link, Route } from 'svelte-routing';
 import Header from './components/ui/CommonHeader.svelte';
-import Footer from './components/ui/CommonFooter.svelte';
+// import Footer from './components/ui/CommonFooter.svelte';
 import Home from './pages/Home.svelte';
 import About from './pages/About.svelte';
 import Post from './pages/Post.svelte';
 import Search from './pages/Search.svelte';
 import User from './pages/User.svelte';
-export let name: string;
 </script>
 
 <main>
   <Header />
-  <h1 class="-blue _mt-10">Hello {name}!</h1>
   <Router>
     <main>
       <Route path="">
@@ -32,5 +30,5 @@ export let name: string;
       </Route>
     </main>
   </Router>
-  <Footer />
+  <!-- <Footer /> -->
 </main>

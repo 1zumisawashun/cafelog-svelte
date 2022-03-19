@@ -4,7 +4,7 @@ import './assets/scss/app.scss';
 const app = new App({
   target: document.body,
   props: {
-    name: 'world',
+    // name: 'world',
   },
 });
 
