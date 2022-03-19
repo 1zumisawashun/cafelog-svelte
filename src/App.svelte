@@ -42,7 +42,6 @@ console.log(timestamp, 'timestamp');
 </main>
 
 <style lang="scss">
-@import '../assets/scss/app.scss';
 main {
   text-align: center;
   padding: 1em;

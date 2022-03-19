@@ -67,6 +67,10 @@ export default {
       },
       preprocess: sveltePreprocess({
         sourceMap: !production,
+        // NOTE:グローバルでsassを読み込む
+        scss: {
+          prependData: `@import './assets/scss/app.scss';`,
+        },
       }),
       compilerOptions: {
         // NOTE:svelte-routerでリダイレクト・ホットリロードさせるために設置
