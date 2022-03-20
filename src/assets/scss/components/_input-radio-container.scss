@@ -1,0 +1,9 @@
+.input-radio-container {
+  display: flex;
+  gap: 10px;
+
+  > .wrapper > .radio:checked ~ .btn {
+    background: black;
+    color: white;
+  }
+}

@@ -1,4 +1,6 @@
 <script lang="ts">
+import { createEventDispatcher } from 'svelte';
+let dispatch = createEventDispatcher();
 const mineType = [
   'image/gif',
   'image/jpeg',
@@ -10,7 +12,7 @@ const mineType = [
 let isSameError: boolean = false;
 let isNumberError: boolean = false;
 let isFileTypeError: boolean = false;
-let photos: Array<File> = [];
+export let photos: Array<File> = [];
 let files: Array<File>;
 
 const resetErrors = () => {
@@ -56,6 +58,7 @@ const handleFile = async ({ target }) => {
   //無限に追加することができるがsliceで強制的に3枚にする
   photos = addedPhotos.slice(0, 3);
   console.log(photos, 'photos');
+  dispatch('change-handler', photos);
 };
 </script>
 
