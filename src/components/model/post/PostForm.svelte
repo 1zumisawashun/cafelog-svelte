@@ -13,15 +13,21 @@ type Field = {
   longitude: string; // 緯度
   latitude: string; // 経度
 };
-const tags = ['wifi', 'date', 'study', 'reserve', 'stand', 'alone'];
-const stars = [1, 2, 3, 4, 5];
-const openOrClose = ['開店', '閉店'];
 
 import InputFileMultiple from './InputFileMultiple.svelte';
 import InputRadio from './InputRadio.svelte';
 import InputCheckbox from './InputCheckbox.svelte';
-import { createEventDispatcher } from 'svelte';
-let dispatch = createEventDispatcher();
+import { onMount } from 'svelte';
+import { UserStore } from '../../../store/UserStore';
+import { get } from 'svelte/store';
+import loadImage from 'blueimp-load-image';
+import type { firebase } from '../../../firebase/config';
+import { projectStorage, projectFirestore } from '../../../firebase/config';
+
+const tags = ['wifi', 'date', 'study', 'reserve', 'stand', 'alone'];
+const stars = [1, 2, 3, 4, 5];
+const openOrClose = ['開店', '閉店'];
+
 let fields: Field = {
   shop_name: '',
   station: '',
@@ -38,19 +44,49 @@ let fields: Field = {
 };
 let errors = { shop_name: '', station: '', photos: '', star_rating: '' };
 let valid = false;
+let user: firebase.User;
+
+onMount(() => {
+  // NOTE:ライフサイクルフック内でStoreにアクセスする
+  user = get(UserStore);
+  console.log(user, 'user on mount');
+});
+
+const getPhotoUrls = async () => {
+  const promises = fields.photos.map(async (file): Promise<any> => {
+    const data = await loadImage(file, {
+      maxWidth: 500,
+      canvas: true,
+    });
+    return new Promise((resolve, reject) => {
+      (data.image as HTMLCanvasElement).toBlob(
+        async (blob) => {
+          if (!blob) return reject('error');
+          const uploadPath = `photos/${user.uid}/${file.name}`;
+          const img = await projectStorage.ref(uploadPath).put(blob);
+          const imgUrl = await img.ref.getDownloadURL();
+          resolve(imgUrl);
+        },
+        file.type,
+        0.7,
+      );
+    });
+  });
+
+  fields.photos = await Promise.all(promises);
+};
 
 const handleUpload = (e) => {
   fields.photos = e.detail;
-  console.log(fields.photos, e, 'handle-upload');
 };
+
 const handleChange = (e, data) => {
   if (data === 'stars') fields.star_rating = e.detail;
   if (data === 'open-or-close') fields.openOrClose = e.detail;
   if (data === 'tags') fields.tags = e.detail;
-  console.log(e.detail, data);
 };
 
-const submitHandler = () => {
+const submitHandler = async () => {
   valid = true;
   // validation shop name
   if (fields.shop_name.trim().length < 1) {
@@ -82,10 +118,11 @@ const submitHandler = () => {
   }
   // add post
   if (valid) {
-    let post = { ...fields };
-    // NOTE:storeから取得したuser情報を入れる
-    console.log(fields, 'fields');
-    dispatch('add', post);
+    await getPhotoUrls();
+    const { uid, displayName, photoURL, email } = user;
+    let post = { ...fields, user: { uid, displayName, photoURL, email } };
+    console.log(post, 'post');
+    projectFirestore.collection('shops').add(post);
   }
 };
 </script>

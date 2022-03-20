@@ -7,6 +7,11 @@ import About from './pages/About.svelte';
 import Post from './pages/Post.svelte';
 import Search from './pages/Search.svelte';
 import User from './pages/User.svelte';
+import { onMount } from 'svelte';
+import { listenForAuthChanges } from './middleware/auth';
+onMount(() => {
+  return listenForAuthChanges();
+});
 </script>
 
 <main>

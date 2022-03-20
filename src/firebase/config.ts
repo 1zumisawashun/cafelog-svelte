@@ -23,6 +23,7 @@ const projectFunctions = firebase.app().functions();
 
 //timestamp
 const timestamp = firebase.firestore.Timestamp;
+const provider = new firebase.auth.GoogleAuthProvider();
 
 // functions側でfirebase emulator:startするなら意味がない？
 const isEmulating = firebaseConfig.useFirebaseEmulator;
@@ -37,5 +38,6 @@ export {
   projectStorage,
   projectFunctions,
   timestamp,
+  provider,
   isEmulating,
 };
