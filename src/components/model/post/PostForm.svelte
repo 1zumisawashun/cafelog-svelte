@@ -1,28 +1,18 @@
 <script lang="ts">
-type Field = {
-  shop_name: string;
-  station: string;
-  photos: Array<File>;
-  comment: string;
-  address: string;
-  tel: string;
-  tags: Array<string>;
-  star_rating: number;
-  business_hours: string;
-  openOrClose: string;
-  longitude: string; // 緯度
-  latitude: string; // 経度
-};
-
+import { onMount } from 'svelte';
+import loadImage from 'blueimp-load-image';
 import InputFileMultiple from './InputFileMultiple.svelte';
 import InputRadio from './InputRadio.svelte';
 import InputCheckbox from './InputCheckbox.svelte';
-import { onMount } from 'svelte';
-import { UserStore } from '../../../store/UserStore';
+import { authStore } from '../../../store/authStore';
 import { get } from 'svelte/store';
-import loadImage from 'blueimp-load-image';
+import {
+  projectStorage,
+  projectFirestore,
+  projectAuth,
+} from '../../../firebase/config';
 import type { firebase } from '../../../firebase/config';
-import { projectStorage, projectFirestore } from '../../../firebase/config';
+import type { Field } from '../../../@types/index';
 
 const tags = ['wifi', 'date', 'study', 'reserve', 'stand', 'alone'];
 const stars = [1, 2, 3, 4, 5];
@@ -47,9 +37,15 @@ let valid = false;
 let user: firebase.User;
 
 onMount(() => {
-  // NOTE:ライフサイクルフック内でStoreにアクセスする
-  user = get(UserStore);
-  console.log(user, 'user on mount');
+  projectAuth.onAuthStateChanged((auth) => {
+    if (auth) {
+      authStore.set(auth);
+      user = auth;
+      console.log(user);
+    } else {
+      authStore.set(null);
+    }
+  });
 });
 
 const getPhotoUrls = async () => {
@@ -119,6 +115,7 @@ const submitHandler = async () => {
   // add post
   if (valid) {
     await getPhotoUrls();
+    // NOTE:上記でFileでなくなるのでエラーが起きる
     const { uid, displayName, photoURL, email } = user;
     let post = { ...fields, user: { uid, displayName, photoURL, email } };
     console.log(post, 'post');

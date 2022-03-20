@@ -8,9 +8,17 @@ import Post from './pages/Post.svelte';
 import Search from './pages/Search.svelte';
 import User from './pages/User.svelte';
 import { onMount } from 'svelte';
-import { listenForAuthChanges } from './middleware/auth';
+import { authStore } from './store/authStore';
+import { projectAuth } from './firebase/config';
+
 onMount(() => {
-  return listenForAuthChanges();
+  projectAuth.onAuthStateChanged((user) => {
+    if (user) {
+      authStore.set(user);
+    } else {
+      authStore.set(null);
+    }
+  });
 });
 </script>
 

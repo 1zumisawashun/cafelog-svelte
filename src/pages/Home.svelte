@@ -1,6 +1,7 @@
 <script lang="ts">
 import { onMount } from 'svelte';
 import { projectFirestore } from '../firebase/config';
+import ShopList from '../components/model/shop/ShopList.svelte';
 let shops: Array<any> = [];
 
 onMount(async () => {
@@ -14,7 +15,5 @@ onMount(async () => {
 </script>
 
 <div class="common-container">
-  <p>Home</p>
+  <ShopList shops="{shops}" />
 </div>
-
-<style lang="scss"></style>
