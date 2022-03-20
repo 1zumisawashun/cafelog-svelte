@@ -5,6 +5,7 @@ type Field = {
   thumbnail: string;
   comment: string;
 };
+import InputFileMultiple from './InputFileMultiple.svelte';
 import { createEventDispatcher } from 'svelte';
 let dispatch = createEventDispatcher();
 let fields: Field = {
@@ -44,24 +45,33 @@ const submitHandler = () => {
 
 <div class="post-form-container">
   <div class="form">
+    <InputFileMultiple />
     <div class="form-field">
-      <label for="shop_name">shop name:</label>
-      <input type="text" id="shop_name" bind:value="{fields.shop_name}" />
+      <label class="label" for="shop_name">shop name:</label>
+      <input
+        class="input"
+        type="text"
+        id="shop_name"
+        bind:value="{fields.shop_name}" />
       <div class="error">{errors.shop_name}</div>
     </div>
     <div class="form-field">
-      <label for="station">station:</label>
-      <input type="text" id="station" bind:value="{fields.station}" />
+      <label class="label" for="station">station:</label>
+      <input
+        class="input"
+        type="text"
+        id="station"
+        bind:value="{fields.station}" />
     </div>
     <div class="form-field">
-      <label for="thumbnail">thumbnail:</label>
-      <input type="text" id="thumbnail" bind:value="{fields.thumbnail}" />
-      <div class="error">{errors.thumbnail}</div>
+      <label class="label" for="comment">comment</label>
+      <input
+        class="input"
+        type="text"
+        id="comment"
+        bind:value="{fields.comment}" />
     </div>
-    <div class="form-field">
-      <label for="comment">comment</label>
-      <input type="text" id="comment" bind:value="{fields.comment}" />
-    </div>
-    <button on:click="{submitHandler}">Post</button>
+
+    <button on:click="{submitHandler}" class="btn">Post</button>
   </div>
 </div>

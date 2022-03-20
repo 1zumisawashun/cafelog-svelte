@@ -1,0 +1,102 @@
+<script lang="ts">
+const mineType = [
+  'image/gif',
+  'image/jpeg',
+  'image/png',
+  'image/bmp',
+  'image/svg+xml',
+];
+
+let isSameError: boolean = false;
+let isNumberError: boolean = false;
+let isFileTypeError: boolean = false;
+let photos: Array<File> = [];
+let files: Array<File>;
+
+const resetErrors = () => {
+  isSameError = false;
+  isNumberError = false;
+  isFileTypeError = false;
+};
+
+const handleFile = async ({ target }) => {
+  if (target.files === null || target.files.length === 0) {
+    return;
+  }
+  files = Object.values((target as HTMLInputElement).files).concat();
+  // NOTE:初期化することで同じファイルを連続で選択してもonChagngeが発動するように設定し、画像をキャンセルしてすぐに同じ画像を選ぶ動作に対応
+  target.value = '';
+  resetErrors();
+
+  console.log(files, 'files');
+
+  const pickedPhotos = files.filter((file) => {
+    // first validation
+    if (!mineType.includes(file.type)) {
+      isFileTypeError = true;
+      return false;
+    }
+    // second validation
+    const existsSameSize = photos.some((photo) => photo.size === file.size);
+    if (existsSameSize) {
+      isSameError = true;
+      return false;
+    }
+    return true;
+  });
+  console.log(pickedPhotos, 'picked photos');
+  if (pickedPhotos.length === 0) {
+    return;
+  }
+
+  const addedPhotos = [...photos, ...pickedPhotos];
+  if (addedPhotos.length >= 4) {
+    isNumberError = true;
+  }
+  //無限に追加することができるがsliceで強制的に3枚にする
+  photos = addedPhotos.slice(0, 3);
+  console.log(photos, 'photos');
+};
+</script>
+
+<div class="input-file-multiple-container">
+  {#each [...Array(3)] as _, index}
+    <div>
+      <div class="wrapper">
+        {#if photos[index]}
+          <img
+            src="{URL.createObjectURL(photos[index])}"
+            alt="{`あなたの写真 ${index + 1}`}"
+            width="200"
+            class="image" />
+        {:else}
+          <label class="wrapper" for="photos">
+            <img src="https://placehold.jp/200x200.png" alt="" class="image" />
+          </label>
+        {/if}
+      </div>
+    </div>
+  {/each}
+</div>
+
+{#if isSameError}<p class="error">
+    ※既に選択された画像と同じものは表示されません
+  </p>{/if}
+{#if isNumberError}<p class="error">
+    ※3枚を超えて選択された画像は表示されません
+  </p>{/if}
+{#if isFileTypeError}
+  <p class="error">
+    ※jpeg, png, bmp, gif, svg以外のファイル形式は表示されません
+  </p>{/if}
+
+<button class="btn _mt-1"><label for="photos">upload</label></button>
+
+<input
+  type="file"
+  name="photos"
+  id="photos"
+  accept="image/*"
+  on:change="{handleFile}"
+  multiple
+  hidden />
