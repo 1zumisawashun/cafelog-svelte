@@ -6,10 +6,10 @@ type Field = {
   comment: string;
   address: string;
   tel: string;
-  tag: string;
-  star_rating: string;
-  day_off: string;
-  open: boolean;
+  tags: Array<string>;
+  star_rating: number;
+  business_hours: string;
+  openOrClose: string;
   longitude: string; // 緯度
   latitude: string; // 経度
 };
@@ -29,42 +29,62 @@ let fields: Field = {
   comment: '',
   address: '',
   tel: '',
-  tag: '',
-  star_rating: '',
-  day_off: '',
-  open: false,
+  tags: [],
+  star_rating: 0,
+  business_hours: '',
+  openOrClose: '',
   longitude: '', // 緯度
   latitude: '', // 経度
 };
-let errors = { shop_name: '', thumbnail: '' };
+let errors = { shop_name: '', station: '', photos: '', star_rating: '' };
 let valid = false;
 
 const handleUpload = (e) => {
   fields.photos = e.detail;
   console.log(fields.photos, e, 'handle-upload');
 };
+const handleChange = (e, data) => {
+  if (data === 'stars') fields.star_rating = e.detail;
+  if (data === 'open-or-close') fields.openOrClose = e.detail;
+  if (data === 'tags') fields.tags = e.detail;
+  console.log(e.detail, data);
+};
 
 const submitHandler = () => {
   valid = true;
-  // validation question
+  // validation shop name
   if (fields.shop_name.trim().length < 1) {
     valid = false;
     errors.shop_name = 'shop name cannot be empty';
   } else {
     errors.shop_name = '';
   }
-  // validation Answer A
-  // if (fields.thumbnail.trim().length < 1) {
-  //   valid = false;
-  //   errors.thumbnail = 'thumbnail cannot be empty';
-  // } else {
-  //   errors.thumbnail = '';
-  // }
+  // validation photos
+  if (fields.photos.length < 1) {
+    valid = false;
+    errors.photos = 'photos cannot be empty';
+  } else {
+    errors.photos = '';
+  }
+  // validation station
+  if (fields.station.trim().length < 1) {
+    valid = false;
+    errors.station = 'station cannot be empty';
+  } else {
+    errors.station = '';
+  }
+  // validation shop name
+  if (!fields.star_rating) {
+    valid = false;
+    errors.star_rating = 'star rating cannot be empty';
+  } else {
+    errors.star_rating = '';
+  }
   // add post
   if (valid) {
     let post = { ...fields };
-    // NOTE:user情報を入れる
-    console.log(fields);
+    // NOTE:storeから取得したuser情報を入れる
+    console.log(fields, 'fields');
     dispatch('add', post);
   }
 };
@@ -75,12 +95,10 @@ const submitHandler = () => {
     <InputFileMultiple
       photos="{fields.photos}"
       on:change-handler="{handleUpload}" />
-    <InputRadio items="{stars}" name="stars" />
-    <InputRadio items="{openOrClose}" name="openOrClose" />
-    <InputCheckbox items="{tags}" name="tags" />
+    <div class="error">{errors.photos}</div>
     <!-- 名前 -->
     <div class="form-field">
-      <label class="label" for="shop_name">shop name:</label>
+      <label class="label" for="shop_name">shop name</label>
       <input
         class="input"
         type="text"
@@ -91,17 +109,18 @@ const submitHandler = () => {
 
     <!-- 最寄り駅 -->
     <div class="form-field">
-      <label class="label" for="station">station:</label>
+      <label class="label" for="station">station</label>
       <input
         class="input"
         type="text"
         id="station"
         bind:value="{fields.station}" />
+      <div class="error">{errors.station}</div>
     </div>
 
     <!-- 住所 -->
     <div class="form-field">
-      <label class="label" for="address">shop address:</label>
+      <label class="label" for="address">shop address</label>
       <input
         class="input"
         type="text"
@@ -111,18 +130,58 @@ const submitHandler = () => {
 
     <!-- 電話番号 -->
     <div class="form-field">
-      <label class="label" for="tel">shop tel:</label>
+      <label class="label" for="tel">shop tel</label>
       <input class="input" type="text" id="tel" bind:value="{fields.tel}" />
+    </div>
+
+    <!-- 緯度 -->
+    <div class="form-field">
+      <label class="label" for="longitude">longitude</label>
+      <input
+        class="input"
+        type="text"
+        id="longitude"
+        bind:value="{fields.longitude}" />
+    </div>
+
+    <!-- 経度 -->
+    <div class="form-field">
+      <label class="label" for="latitude">latitude</label>
+      <input
+        class="input"
+        type="text"
+        id="latitude"
+        bind:value="{fields.latitude}" />
+    </div>
+
+    <div class="form-field">
+      <label class="label" for="">stars</label>
+      <InputRadio
+        items="{stars}"
+        name="stars"
+        on:change-handler="{(e) => handleChange(e, 'stars')}" />
+      <div class="error">{errors.star_rating}</div>
+    </div>
+    <div class="form-field">
+      <label class="label" for="">open or close</label>
+      <InputRadio
+        items="{openOrClose}"
+        name="openOrClose"
+        on:change-handler="{(e) => handleChange(e, 'open-or-close')}" />
+    </div>
+    <div class="form-field">
+      <label class="label" for="">tags</label>
+      <InputCheckbox
+        items="{tags}"
+        name="tags"
+        on:change-handler="{(e) => handleChange(e, 'tags')}" />
     </div>
 
     <!-- コメント -->
     <div class="form-field">
       <label class="label" for="comment">comment</label>
-      <input
-        class="input"
-        type="text"
-        id="comment"
-        bind:value="{fields.comment}" />
+      <textarea class="input" id="comment" bind:value="{fields.comment}"
+      ></textarea>
     </div>
 
     <button on:click="{submitHandler}" class="btn">Post</button>

@@ -3,6 +3,13 @@
 export let items: Array<number | string> = [];
 export let name: string = '';
 let selection: string = '';
+import { createEventDispatcher } from 'svelte';
+let dispatch = createEventDispatcher();
+
+const handleChange = () => {
+  console.log(selection, 'selection');
+  dispatch('change-handler', selection);
+};
 </script>
 
 <div class="input-radio-container">
@@ -14,6 +21,7 @@ let selection: string = '';
         name="{name}"
         value="{item}"
         bind:group="{selection}"
+        on:change="{handleChange}"
         class="radio" />
       <label for="{String(item)}" class="btn">{item}</label>
     </div>

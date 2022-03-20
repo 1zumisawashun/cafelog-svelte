@@ -3,6 +3,13 @@
 export let items: Array<number | string> = [];
 export let name: string = '';
 let selections: Array<string> = [];
+import { createEventDispatcher } from 'svelte';
+let dispatch = createEventDispatcher();
+
+const handleChange = () => {
+  console.log(selections, 'selections');
+  dispatch('change-handler', selections);
+};
 </script>
 
 <div class="input-checkbox-container">
@@ -14,6 +21,7 @@ let selections: Array<string> = [];
         name="{name}"
         value="{item}"
         bind:group="{selections}"
+        on:change="{handleChange}"
         class="checkbox" />
       <label for="{String(item)}" class="button btn">{item}</label>
     </div>
