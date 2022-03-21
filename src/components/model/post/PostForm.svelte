@@ -1,5 +1,6 @@
 <script lang="ts">
 import { onMount } from 'svelte';
+import { navigate } from 'svelte-routing';
 import loadImage from 'blueimp-load-image';
 import InputFileMultiple from './InputFileMultiple.svelte';
 import InputRadio from './InputRadio.svelte';
@@ -126,6 +127,7 @@ const closeModal = () => {
   setToggleModal = false;
   document.body.style.overflow = '';
   console.log('close-modal');
+  navigate('/', { replace: true });
 };
 </script>
 

@@ -1,5 +1,4 @@
 <script lang="ts">
-import { Router, Link, Route } from 'svelte-routing';
 import { style } from '../../middleware/style';
 import { createEventDispatcher } from 'svelte';
 let dispatch = createEventDispatcher();
@@ -27,17 +26,13 @@ const closeModal = () => {
 };
 </script>
 
-<Router>
-  <div class="execute-modal">
-    <div class="overlay" use:style="{styles}">
-      <div class="wrapper">
-        <p class="message">成功しました</p>
-        <div class="buttons">
-          <Link to="/">
-            <button class="btn -mw150" on:click="{closeModal}">トップへ</button>
-          </Link>
-        </div>
+<div class="execute-modal">
+  <div class="overlay" use:style="{styles}">
+    <div class="wrapper">
+      <p class="message">成功しました</p>
+      <div class="buttons">
+        <button class="btn -mw150" on:click="{closeModal}">トップへ</button>
       </div>
     </div>
   </div>
-</Router>
+</div>
