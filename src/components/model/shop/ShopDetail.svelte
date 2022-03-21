@@ -1,7 +1,7 @@
 <script lang="ts"></script>
 
 <div class="common-container">
-  <p>Search</p>
+  <p>shop-detail</p>
 </div>
 
 <style lang="scss"></style>
