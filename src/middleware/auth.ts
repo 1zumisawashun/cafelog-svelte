@@ -1,11 +1,4 @@
-import { onMount } from 'svelte';
-import { authStore } from '../store/authStore';
-import {
-  projectAuth,
-  projectFirestore,
-  firebase,
-  provider,
-} from '../firebase/config';
+import { projectAuth, projectFirestore, provider } from '../firebase/config';
 
 export const logout = async () => {
   try {

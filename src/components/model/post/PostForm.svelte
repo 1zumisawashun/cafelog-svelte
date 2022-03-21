@@ -5,12 +5,7 @@ import InputFileMultiple from './InputFileMultiple.svelte';
 import InputRadio from './InputRadio.svelte';
 import InputCheckbox from './InputCheckbox.svelte';
 import { authStore } from '../../../store/authStore';
-import { get } from 'svelte/store';
-import {
-  projectStorage,
-  projectFirestore,
-  projectAuth,
-} from '../../../firebase/config';
+import { projectStorage, projectFirestore } from '../../../firebase/config';
 import type { firebase } from '../../../firebase/config';
 import type { Field } from '../../../@types/index';
 
@@ -36,16 +31,13 @@ let errors = { shop_name: '', station: '', photos: '', star_rating: '' };
 let valid = false;
 let user: firebase.User;
 
+const unsub = authStore.subscribe((data) => {
+  user = data;
+});
+
 onMount(() => {
-  projectAuth.onAuthStateChanged((auth) => {
-    if (auth) {
-      authStore.set(auth);
-      user = auth;
-      console.log(user);
-    } else {
-      authStore.set(null);
-    }
-  });
+  unsub();
+  console.log(user, 'get user store on mount');
 });
 
 const getPhotoUrls = async () => {

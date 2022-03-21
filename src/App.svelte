@@ -7,19 +7,7 @@ import About from './pages/About.svelte';
 import Post from './pages/Post.svelte';
 import Search from './pages/Search.svelte';
 import User from './pages/User.svelte';
-import { onMount } from 'svelte';
-import { authStore } from './store/authStore';
-import { projectAuth } from './firebase/config';
-
-onMount(() => {
-  projectAuth.onAuthStateChanged((user) => {
-    if (user) {
-      authStore.set(user);
-    } else {
-      authStore.set(null);
-    }
-  });
-});
+import Shop from './pages/Shop.svelte';
 </script>
 
 <main>
@@ -40,6 +28,9 @@ onMount(() => {
       </Route>
       <Route path="/users/:id" let:params>
         <User id="{params.id}" />
+      </Route>
+      <Route path="/shops/:id" let:params>
+        <Shop id="{params.id}" />
       </Route>
     </main>
   </Router>
