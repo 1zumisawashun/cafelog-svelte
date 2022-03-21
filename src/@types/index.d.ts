@@ -1,13 +1,13 @@
 export type Field = {
-  shop_name: string;
+  shopName: string;
   station: string;
-  photos: Array<File>;
+  photoUrls: Array<string>;
   comment: string;
   address: string;
   tel: string;
   tags: Array<string>;
-  star_rating: number;
-  business_hours: string;
+  starRating: number;
+  businessHours: string;
   openOrClose: string;
   longitude: string; // 緯度
   latitude: string; // 経度

@@ -14,22 +14,24 @@ const stars = [1, 2, 3, 4, 5];
 const openOrClose = ['開店', '閉店'];
 
 let fields: Field = {
-  shop_name: '',
+  shopName: '',
   station: '',
-  photos: [],
+  photoUrls: [],
   comment: '',
   address: '',
   tel: '',
   tags: [],
-  star_rating: 0,
-  business_hours: '',
+  starRating: 0,
+  businessHours: '',
   openOrClose: '',
   longitude: '', // 緯度
   latitude: '', // 経度
 };
-let errors = { shop_name: '', station: '', photos: '', star_rating: '' };
+
+let errors = { shopName: '', station: '', photos: '' };
 let valid = false;
 let user: firebase.User;
+let localPhotos: Array<File>;
 
 const unsub = authStore.subscribe((data) => {
   user = data;
@@ -41,7 +43,7 @@ onMount(() => {
 });
 
 const getPhotoUrls = async () => {
-  const promises = fields.photos.map(async (file): Promise<any> => {
+  const promises = localPhotos.map(async (file): Promise<string> => {
     const data = await loadImage(file, {
       maxWidth: 500,
       canvas: true,
@@ -61,15 +63,15 @@ const getPhotoUrls = async () => {
     });
   });
 
-  fields.photos = await Promise.all(promises);
+  fields.photoUrls = await Promise.all(promises);
 };
 
 const handleUpload = (e) => {
-  fields.photos = e.detail;
+  localPhotos = e.detail;
 };
 
 const handleChange = (e, data) => {
-  if (data === 'stars') fields.star_rating = e.detail;
+  if (data === 'stars') fields.starRating = e.detail;
   if (data === 'open-or-close') fields.openOrClose = e.detail;
   if (data === 'tags') fields.tags = e.detail;
 };
@@ -77,14 +79,14 @@ const handleChange = (e, data) => {
 const submitHandler = async () => {
   valid = true;
   // validation shop name
-  if (fields.shop_name.trim().length < 1) {
+  if (fields.shopName.trim().length < 1) {
     valid = false;
-    errors.shop_name = 'shop name cannot be empty';
+    errors.shopName = 'shop name cannot be empty';
   } else {
-    errors.shop_name = '';
+    errors.shopName = '';
   }
   // validation photos
-  if (fields.photos.length < 1) {
+  if (localPhotos.length < 1) {
     valid = false;
     errors.photos = 'photos cannot be empty';
   } else {
@@ -97,13 +99,6 @@ const submitHandler = async () => {
   } else {
     errors.station = '';
   }
-  // validation shop name
-  if (!fields.star_rating) {
-    valid = false;
-    errors.star_rating = 'star rating cannot be empty';
-  } else {
-    errors.star_rating = '';
-  }
   // add post
   if (valid) {
     await getPhotoUrls();
@@ -111,7 +106,11 @@ const submitHandler = async () => {
     const { uid, displayName, photoURL, email } = user;
     let post = { ...fields, user: { uid, displayName, photoURL, email } };
     console.log(post, 'post');
-    projectFirestore.collection('shops').add(post);
+    try {
+      projectFirestore.collection('shops').add(post);
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 </script>
@@ -119,7 +118,7 @@ const submitHandler = async () => {
 <div class="post-form-container">
   <div class="form">
     <InputFileMultiple
-      photos="{fields.photos}"
+      photos="{localPhotos}"
       on:change-handler="{handleUpload}" />
     <div class="error">{errors.photos}</div>
     <!-- 名前 -->
@@ -129,8 +128,8 @@ const submitHandler = async () => {
         class="input"
         type="text"
         id="shop_name"
-        bind:value="{fields.shop_name}" />
-      <div class="error">{errors.shop_name}</div>
+        bind:value="{fields.shopName}" />
+      <div class="error">{errors.shopName}</div>
     </div>
 
     <!-- 最寄り駅 -->
@@ -186,7 +185,6 @@ const submitHandler = async () => {
         items="{stars}"
         name="stars"
         on:change-handler="{(e) => handleChange(e, 'stars')}" />
-      <div class="error">{errors.star_rating}</div>
     </div>
     <div class="form-field">
       <label class="label" for="">open or close</label>
