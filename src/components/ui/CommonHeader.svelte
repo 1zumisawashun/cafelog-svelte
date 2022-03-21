@@ -22,17 +22,15 @@ onMount(() => {
 
 const handleLogin = () => {
   login();
-  console.log('login');
 };
 const handleLogout = () => {
   logout();
-  console.log('logout');
   authStore.set(null);
   user = null;
 };
 const handleAnnoymouse = () => {
+  // NOTE:Firebase consoleで登録する必要がある
   annoymouse();
-  console.log('annoymouse');
 };
 </script>
 
@@ -43,7 +41,6 @@ const handleAnnoymouse = () => {
     </div>
     <nav class="navbar">
       <Link to="" class="item">home</Link>
-      <Link to="/about" class="item">about</Link>
       <Link to="/search" class="item">search</Link>
       {#if user?.uid}
         <Link to="/post" class="item">post</Link>

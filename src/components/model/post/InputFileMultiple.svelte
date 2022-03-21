@@ -9,10 +9,10 @@ const mineType = [
   'image/svg+xml',
 ];
 
+export let photos: Array<File> = [];
 let isSameError: boolean = false;
 let isNumberError: boolean = false;
 let isFileTypeError: boolean = false;
-export let photos: Array<File> = [];
 let files: Array<File>;
 
 const resetErrors = () => {

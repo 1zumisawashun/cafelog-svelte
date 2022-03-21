@@ -3,7 +3,6 @@ import { Router, Link, Route } from 'svelte-routing';
 import Header from './components/ui/CommonHeader.svelte';
 // import Footer from './components/ui/CommonFooter.svelte';
 import Home from './pages/Home.svelte';
-import About from './pages/About.svelte';
 import Post from './pages/Post.svelte';
 import Search from './pages/Search.svelte';
 import User from './pages/User.svelte';
@@ -16,9 +15,6 @@ import Shop from './pages/Shop.svelte';
     <main>
       <Route path="">
         <Home />
-      </Route>
-      <Route path="/about">
-        <About />
       </Route>
       <Route path="/post">
         <Post />
