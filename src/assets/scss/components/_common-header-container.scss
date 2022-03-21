@@ -14,7 +14,7 @@
     align-items: center;
   }
   > .navbar > .item {
-    color: #4a4141;
+    color: $shale;
     text-decoration: none;
     justify-content: center;
     cursor: pointer;
@@ -22,6 +22,9 @@
     display: flex;
     padding: 0;
     margin: 0;
+  }
+  > .navbar > .item:hover {
+    color: $ultimate-orange;
   }
   > .logo {
     display: flex;

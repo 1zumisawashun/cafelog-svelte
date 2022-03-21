@@ -48,7 +48,7 @@ const closeModal = () => {
 };
 </script>
 
-<div class="common-header-container">
+<header class="common-header-container">
   <Router>
     <div class="logo">
       <img src="logo.jpg" alt="" />
@@ -66,7 +66,7 @@ const closeModal = () => {
       {/if}
     </nav>
   </Router>
-</div>
+</header>
 
 {#if setToggleModal}
   <div class="common-container">

@@ -1,7 +1,3 @@
-<script lang="ts"></script>
-
-<div class="common-container">
-  <p>Footer</p>
-</div>
-
-<style lang="scss"></style>
+<footer class="common-footer-container">
+  <div class="copyright">Copyright 2022 cafelog</div>
+</footer>

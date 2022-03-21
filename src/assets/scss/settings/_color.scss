@@ -3,10 +3,12 @@
 /* black */
 $black: #000;
 $black-dark-grey: #363636;
+$shale: #4a4141;
 
 /* grey */
 $grey: #808080;
 $goshawk-grey: #444;
+$stone-cold: #555;
 $basalt-grey: #999;
 
 /* white */
@@ -18,7 +20,8 @@ $lighthouse: #f4f4f4;
 /* green */
 
 /* red */
-$ultimate-orange: #ff3e00;
+$infrared-tang: #d91b42;
+$ultimate-orange: #ff3e00; // NOTE: svelte のメインカラー
 
 /* shadow color */
 $black-shadow: rgba(0, 0, 0, 0.1);

@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Router, Link, Route } from 'svelte-routing';
 import Header from './components/ui/CommonHeader.svelte';
-// import Footer from './components/ui/CommonFooter.svelte';
+import Footer from './components/ui/CommonFooter.svelte';
 import Home from './pages/Home.svelte';
 import Post from './pages/Post.svelte';
 import Search from './pages/Search.svelte';
@@ -23,12 +23,12 @@ import Shop from './pages/Shop.svelte';
         <Search />
       </Route>
       <Route path="/users/:id" let:params>
-        <User id="{params.id}" />
+        <User />
       </Route>
       <Route path="/shops/:id" let:params>
         <Shop id="{params.id}" />
       </Route>
     </main>
   </Router>
-  <!-- <Footer /> -->
+  <Footer />
 </main>
