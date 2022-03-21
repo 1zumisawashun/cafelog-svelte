@@ -8,13 +8,3 @@ import ShopCard from '../shop/ShopCard.svelte';
     <ShopCard shop="{shop}" />
   {/each}
 </div>
-
-<style>
-.shop-list-container {
-  width: 50%;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  grid-gap: 30px 5%;
-}
-</style>
