@@ -1,5 +1,10 @@
-<script lang="ts"></script>
+<script lang="ts">
+export let shops: Array<any>;
+import ShopCard from '../shop/ShopCard.svelte';
+</script>
 
-<div>
-  <p>uset-tab-visited</p>
+<div class="user-tab-container">
+  {#each shops as shop}
+    <ShopCard shop="{shop}" />
+  {/each}
 </div>
