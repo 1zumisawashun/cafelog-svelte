@@ -11,10 +11,10 @@ import ShopCard from '../shop/ShopCard.svelte';
 
 <style>
 .shop-list-container {
-  width: 70%;
+  width: 50%;
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
-  grid-gap: 30px 4%;
+  grid-gap: 30px 5%;
 }
 </style>

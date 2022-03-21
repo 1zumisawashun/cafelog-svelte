@@ -67,11 +67,11 @@ const handleFile = async ({ target }) => {
           <img
             src="{URL.createObjectURL(photos[index])}"
             alt="{`あなたの写真 ${index + 1}`}"
-            width="200"
+            width="150"
             class="image" />
         {:else}
           <label class="wrapper" for="photos">
-            <img src="https://placehold.jp/200x200.png" alt="" class="image" />
+            <img src="https://placehold.jp/150x200.png" alt="" class="image" />
           </label>
         {/if}
       </div>
