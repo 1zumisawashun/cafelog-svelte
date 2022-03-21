@@ -26,13 +26,11 @@ const closeModal = () => {
 };
 </script>
 
-<div class="execute-modal">
-  <div class="overlay" use:style="{styles}">
-    <div class="wrapper">
-      <p class="message">成功しました</p>
-      <div class="buttons">
-        <button class="btn -mw150" on:click="{closeModal}">トップへ</button>
-      </div>
+<div class="overlay" use:style="{styles}">
+  <div class="wrapper -form">
+    <p class="message">成功しました</p>
+    <div class="buttons">
+      <button class="btn -mw150" on:click="{closeModal}">トップへ</button>
     </div>
   </div>
 </div>

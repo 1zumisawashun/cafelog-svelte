@@ -1,0 +1,21 @@
+.loading-container {
+  border: 1px solid #ff3e00;
+  position: relative;
+  animation: loading ease 1.5s infinite;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin: 30px auto;
+  &::before {
+    content: '';
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background-color: #ff3e00;
+    border-radius: 50%;
+  }
+}

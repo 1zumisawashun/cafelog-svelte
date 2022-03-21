@@ -23,7 +23,7 @@ const handleChange = () => {
         bind:group="{selection}"
         on:change="{handleChange}"
         class="radio" />
-      <label for="{String(item)}" class="btn">{item}</label>
+      <label for="{String(item)}" class="btn -mw100">{item}</label>
     </div>
   {/each}
 </div>

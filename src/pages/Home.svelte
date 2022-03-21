@@ -3,6 +3,7 @@ import { onMount } from 'svelte';
 import { projectFirestore } from '../firebase/config';
 import ShopList from '../components/model/shop/ShopList.svelte';
 import { shopStore } from '../store/shopStore';
+import Loading from '../components/ui/Loading.svelte';
 let shops: Array<any> = [];
 
 const unsub = shopStore.subscribe((data) => {
@@ -26,5 +27,9 @@ onMount(async () => {
 </script>
 
 <div class="common-container _pt-5 _pb-5">
-  <ShopList shops="{shops}" />
+  {#if shops.length === 0}
+    <Loading />
+  {:else}
+    <ShopList shops="{shops}" />
+  {/if}
 </div>

@@ -23,7 +23,7 @@ const handleChange = () => {
         bind:group="{selections}"
         on:change="{handleChange}"
         class="checkbox" />
-      <label for="{String(item)}" class="button btn">{item}</label>
+      <label for="{String(item)}" class="button btn -mw100">{item}</label>
     </div>
   {/each}
 </div>

@@ -30,14 +30,12 @@ const closeModal = () => {
 };
 </script>
 
-<div class="execute-modal">
-  <div class="overlay" use:style="{styles}">
-    <div class="wrapper">
-      <slot />
-      <div class="buttons">
-        <button class="btn -mw150" on:click="{handleClick}">はい</button>
-        <button class="btn -mw150" on:click="{closeModal}">いいえ</button>
-      </div>
+<div class="overlay" use:style="{styles}">
+  <div class="wrapper -form">
+    <slot />
+    <div class="buttons">
+      <button class="btn -mw150 -inverse" on:click="{handleClick}">はい</button>
+      <button class="btn -mw150" on:click="{closeModal}">いいえ</button>
     </div>
   </div>
 </div>
