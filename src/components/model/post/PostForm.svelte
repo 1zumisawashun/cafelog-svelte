@@ -8,6 +8,7 @@ import { authStore } from '../../../store/authStore';
 import { projectStorage, projectFirestore } from '../../../firebase/config';
 import type { firebase } from '../../../firebase/config';
 import type { Field } from '../../../@types/index';
+import ModalMessage from '../../ui/ModalMessage.svelte';
 
 const tags = ['wifi', 'date', 'study', 'reserve', 'stand', 'alone'];
 const stars = [1, 2, 3, 4, 5];
@@ -32,6 +33,7 @@ let errors = { shopName: '', station: '', photos: '' };
 let valid = false;
 let user: firebase.User;
 let localPhotos: Array<File>;
+let setToggleModal: boolean = false;
 
 const unsub = authStore.subscribe((data) => {
   user = data;
@@ -108,10 +110,22 @@ const submitHandler = async () => {
     console.log(post, 'post');
     try {
       projectFirestore.collection('shops').add(post);
+      openModal();
     } catch (error) {
       console.log(error);
     }
   }
+};
+
+const openModal = () => {
+  setToggleModal = true;
+  document.body.style.overflow = 'hidden';
+};
+
+const closeModal = () => {
+  setToggleModal = false;
+  document.body.style.overflow = '';
+  console.log('close-modal');
 };
 </script>
 
@@ -211,3 +225,9 @@ const submitHandler = async () => {
     <button on:click="{submitHandler}" class="btn">Post</button>
   </div>
 </div>
+
+{#if setToggleModal}
+  <div class="common-container">
+    <ModalMessage on:close-modal="{closeModal}" />
+  </div>
+{/if}
