@@ -2,7 +2,7 @@
 import PostForm from '../components/model/post/PostForm.svelte';
 </script>
 
-<div class="common-container _pt-5">
+<div class="common-container _pt-5 _pb-5">
   <PostForm />
 </div>
 

@@ -30,8 +30,6 @@ const handleFile = async ({ target }) => {
   target.value = '';
   resetErrors();
 
-  console.log(files, 'files');
-
   const pickedPhotos = files.filter((file) => {
     // first validation
     if (!mineType.includes(file.type)) {
@@ -46,7 +44,6 @@ const handleFile = async ({ target }) => {
     }
     return true;
   });
-  console.log(pickedPhotos, 'picked photos');
   if (pickedPhotos.length === 0) {
     return;
   }

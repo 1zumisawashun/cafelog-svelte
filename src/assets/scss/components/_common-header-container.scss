@@ -11,14 +11,17 @@
     width: 30%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
   }
-  > .navbar > a {
+  > .navbar > .item {
     color: #4a4141;
     text-decoration: none;
     justify-content: center;
     cursor: pointer;
     font-weight: bold;
     display: flex;
+    padding: 0;
+    margin: 0;
   }
   > .logo {
     display: flex;
