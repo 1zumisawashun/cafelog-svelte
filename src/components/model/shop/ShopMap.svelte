@@ -17,7 +17,7 @@ onMount(async () => {
 });
 </script>
 
-<div class="full-screen" bind:this="{container}"></div>
+<div class="full-screen _mt-5" bind:this="{container}"></div>
 
 <style>
 .full-screen {
