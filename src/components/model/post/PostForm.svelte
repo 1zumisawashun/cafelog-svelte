@@ -224,7 +224,9 @@ const closeModal = () => {
       ></textarea>
     </div>
 
-    <button on:click="{submitHandler}" class="btn">Post</button>
+    <div class="button-wrapper">
+      <button on:click="{submitHandler}" class="btn">Post</button>
+    </div>
   </div>
 </div>
 
