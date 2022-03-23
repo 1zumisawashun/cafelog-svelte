@@ -21,7 +21,7 @@ onMount(async () => {
 
 <style>
 .full-screen {
-  width: 100vw;
+  /* width: 100vw; */
   height: 300px;
 }
 </style>
