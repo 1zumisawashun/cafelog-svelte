@@ -51,7 +51,8 @@ const closeModal = () => {
 <header class="common-header-container">
   <Router>
     <div class="logo">
-      <img src="logo.jpg" alt="" />
+      <!-- NOTE: public ディレクトリから呼ばないと表示できないっぽい -->
+      <img src="assets/image/logo.jpg" alt="" />
     </div>
     <nav class="navbar">
       <Link to="" class="item">home</Link>
