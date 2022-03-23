@@ -1,9 +1,12 @@
 .input-file-multiple-container {
   display: flex;
   justify-content: space-between;
-  /*コレ*/
-  overflow-x: scroll;
-
+  &.-scroll {
+    overflow-x: scroll;
+  }
+  &.-center {
+    justify-content: center;
+  }
   > div > .wrapper {
     width: 200px;
     height: 300px;

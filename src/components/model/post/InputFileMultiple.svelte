@@ -1,13 +1,7 @@
 <script lang="ts">
 import { createEventDispatcher } from 'svelte';
+import { mineType } from '../../../utilities/utilities';
 let dispatch = createEventDispatcher();
-const mineType = [
-  'image/gif',
-  'image/jpeg',
-  'image/png',
-  'image/bmp',
-  'image/svg+xml',
-];
 
 export let photos: Array<File> = [];
 let isSameError: boolean = false;
@@ -59,7 +53,7 @@ const handleFile = async ({ target }) => {
 };
 </script>
 
-<div class="input-file-multiple-container">
+<div class="input-file-multiple-container -scroll">
   {#each [...Array(3)] as _, index}
     <div>
       <div class="wrapper">
@@ -90,7 +84,9 @@ const handleFile = async ({ target }) => {
     ※jpeg, png, bmp, gif, svg以外のファイル形式は表示されません
   </p>{/if}
 
-<button class="btn _mt-1"><label for="photos">upload</label></button>
+<div class="button-wrapper">
+  <button class="btn"><label for="photos">upload</label></button>
+</div>
 
 <input
   type="file"
