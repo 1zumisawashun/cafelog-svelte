@@ -1,24 +1,8 @@
 <script lang="ts">
 import { style } from '../../middleware/style';
 import { createEventDispatcher } from 'svelte';
+import { scrollTop } from '../../utilities/utilities';
 let dispatch = createEventDispatcher();
-
-const scrollTop = (): number => {
-  let scrollingElementTop: number = 0;
-
-  if (document.scrollingElement) {
-    scrollingElementTop = document.scrollingElement.scrollTop;
-  }
-
-  return Math.max(
-    window.scrollY,
-    window.pageYOffset,
-    document.body.scrollTop,
-    document.documentElement.scrollTop,
-    scrollingElementTop,
-  );
-};
-
 let styles = { top: `${scrollTop()}px` };
 
 const handleClick = () => {
@@ -31,9 +15,9 @@ const closeModal = () => {
 </script>
 
 <div class="overlay" use:style="{styles}">
-  <div class="wrapper -form">
+  <div class="wrapper -form -small">
     <slot />
-    <div class="buttons">
+    <div class="button-wrapper">
       <button class="btn -mw150 -inverse" on:click="{handleClick}">はい</button>
       <button class="btn -mw150" on:click="{closeModal}">いいえ</button>
     </div>

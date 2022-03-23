@@ -1,24 +1,8 @@
 <script lang="ts">
 import { style } from '../../middleware/style';
 import { createEventDispatcher } from 'svelte';
+import { scrollTop } from '../../utilities/utilities';
 let dispatch = createEventDispatcher();
-
-const scrollTop = (): number => {
-  let scrollingElementTop: number = 0;
-
-  if (document.scrollingElement) {
-    scrollingElementTop = document.scrollingElement.scrollTop;
-  }
-
-  return Math.max(
-    window.scrollY,
-    window.pageYOffset,
-    document.body.scrollTop,
-    document.documentElement.scrollTop,
-    scrollingElementTop,
-  );
-};
-
 let styles = { top: `${scrollTop()}px` };
 
 const closeModal = () => {
@@ -27,9 +11,9 @@ const closeModal = () => {
 </script>
 
 <div class="overlay" use:style="{styles}">
-  <div class="wrapper -form">
+  <div class="wrapper -form -small">
     <p class="message">エラーが発生しました</p>
-    <div class="buttons">
+    <div class="button-wrapper">
       <button class="btn -mw150" on:click="{closeModal}">閉じる</button>
     </div>
   </div>
