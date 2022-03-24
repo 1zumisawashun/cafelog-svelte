@@ -2,20 +2,12 @@
 import { onMount } from 'svelte';
 import UserTab from '../components/model/user/UserTab.svelte';
 import Loading from '../components/ui/Loading.svelte';
-import { db } from '../middleware/firebaseClient';
+import { shopUseCase } from '../middleware/firebaseClient';
 let shops: Array<any> = [];
 
-const getFirestore = async () => {
-  const ref = db.shops;
-  const snapshot = await ref.get();
-  const result = snapshot.docs.map((doc) => {
-    return { ...doc.data(), id: doc.id };
-  });
-  shops = [...shops, ...result];
-};
-
 onMount(async () => {
-  getFirestore();
+  shops = await shopUseCase.fetchAll();
+  console.log(shops, 'shopUseCase on User.svelte');
 });
 </script>
 
