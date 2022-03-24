@@ -4,6 +4,26 @@
 
 ---
 
+# 技術選定
+
+```
+言語: TypeScript
+Componentsアーキテクチャ： Ui & Model パターン
+CSSアーキテクチャ: ITCSS, RSCSS
+ライブラリ: Svelte３
+ホスティング: Firebase Hosting
+DB: Firestore
+サーバー: Cloud Functions, Express
+全文検索: Firebase Algolia Extensions
+認証: Firebase Authentication
+ストレージ: Cloud Storage
+CICD: CircleCI
+API: Google Map API
+リンター: ESLint, Stylelint
+フォーマッター: Prettier
+コミット品質担保： Lint-Staged, Husky
+```
+
 # svelte app
 
 This is a project template for [Svelte](https://svelte.dev) apps. It lives at https://github.com/sveltejs/template.
