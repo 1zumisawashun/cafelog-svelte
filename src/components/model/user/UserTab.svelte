@@ -2,29 +2,7 @@
 import UserTabHeader from './UserTabHeader.svelte';
 import UserTabSaved from './UserTabSaved.svelte';
 import UserTabVisited from './UserTabVisited.svelte';
-import { onMount } from 'svelte';
-import { projectFirestore } from '../../../firebase/config';
-import { shopStore } from '../../../store/shopStore';
-// import Loading from '../../../components/ui/Loading.svelte';
-let shops: Array<any> = [];
-
-const unsub = shopStore.subscribe((data) => {
-  shops = [...shops, ...data];
-});
-
-const getFirestore = async () => {
-  const ref = await projectFirestore.collection('shops');
-  const snapshot = await ref.get();
-  const result = snapshot.docs.map((doc) => {
-    return { ...doc.data(), id: doc.id };
-  });
-  shops = [...shops, ...result];
-};
-
-onMount(async () => {
-  unsub();
-  getFirestore();
-});
+export let shops;
 
 //tabs
 let items = ['Cafe Saved', 'Cafe Visited'];

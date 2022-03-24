@@ -1,6 +1,6 @@
 <script lang="ts">
 import { createEventDispatcher } from 'svelte';
-import { mineType } from '../../../utilities/utilities';
+import { mineType } from '../../../middleware/utilities';
 let dispatch = createEventDispatcher();
 
 export let photos: Array<File> = [];

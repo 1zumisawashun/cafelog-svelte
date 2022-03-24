@@ -1,7 +1,7 @@
 <script lang="ts">
 import { style } from '../../middleware/style';
 import { createEventDispatcher } from 'svelte';
-import { scrollTop } from '../../utilities/utilities';
+import { scrollTop } from '../../middleware/utilities';
 let dispatch = createEventDispatcher();
 let styles = { top: `${scrollTop()}px` };
 
