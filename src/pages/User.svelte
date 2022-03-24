@@ -2,12 +2,13 @@
 import { onMount } from 'svelte';
 import UserTab from '../components/model/user/UserTab.svelte';
 import Loading from '../components/ui/Loading.svelte';
-import { shopUseCase } from '../middleware/firebaseClient';
-let shops: Array<any> = [];
+import { firebaseUseCase } from '../middleware/firebaseClient';
+import type { Field } from '../@types/index';
+let shops: Array<Field> = [];
 
 onMount(async () => {
-  shops = await shopUseCase.fetchAll();
-  console.log(shops, 'shopUseCase on User.svelte');
+  shops = await firebaseUseCase.fetchAll();
+  console.log(shops, 'firebaseUseCase on User.svelte');
 });
 </script>
 

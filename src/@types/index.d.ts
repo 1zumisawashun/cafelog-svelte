@@ -1,4 +1,7 @@
+import type { firebase } from '../firebase/config';
+
 export type Field = {
+  id: string;
   shopName: string;
   station: string;
   photoUrls: Array<string>;
@@ -11,4 +14,56 @@ export type Field = {
   openOrClose: string;
   longitude: string; // 緯度
   latitude: string; // 経度
+  user: User;
+};
+
+export type User = {
+  displayName: firebase.UserInfo.displayName;
+  photoURL: firebase.UserInfo.photoURL;
+  uid: string;
+  email: string;
+};
+export type CreatedAt = {
+  createdAt: firebase.firestore.Timestamp;
+};
+
+export type FieldWithoutId = Omit<Field, 'id'>;
+
+export type FieldWithoutIdAndUser = Omit<Field, 'id' | 'user'>;
+
+export type FieldWithoutIdWithCreatedAt = CreatedAt & FieldWithoutId;
+
+export type Comment = {
+  displayName: firebase.UserInfo.displayName;
+  photoURL: firebase.UserInfo.photoURL;
+  content: string;
+  createdAt: firebase.firestore.Timestamp;
+  id: number; // NOTE:ランダムで生成したID
+};
+
+export type Photo = {
+  displayName: firebase.UserInfo.displayName;
+  photoURL: firebase.UserInfo.photoURL;
+  photo: string;
+  createdAt: firebase.firestore.Timestamp;
+  id: number; // NOTE:ランダムで生成したID
+};
+
+export type FieldWithCommentAndPhoto = {
+  id: string;
+  shopName: string;
+  station: string;
+  photoUrls: Array<string>;
+  comment: string;
+  address: string;
+  tel: string;
+  tags: Array<string>;
+  starRating: number;
+  businessHours: string;
+  openOrClose: string;
+  longitude: string; // 緯度
+  latitude: string; // 経度
+  user: User;
+  comments: Array<Comment>; // NOTE:追加
+  photos: Array<Photo>; // NOTE:追加
 };

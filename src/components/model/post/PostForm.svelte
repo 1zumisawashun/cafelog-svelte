@@ -1,21 +1,24 @@
 <script lang="ts">
 import { onMount } from 'svelte';
 import { navigate } from 'svelte-routing';
-import loadImage from 'blueimp-load-image';
 import InputFileMultiple from './InputFileMultiple.svelte';
 import InputRadio from './InputRadio.svelte';
 import InputCheckbox from './InputCheckbox.svelte';
 import { authStore } from '../../../store/authStore';
-import { projectStorage, projectFirestore } from '../../../firebase/config';
 import type { firebase } from '../../../firebase/config';
-import type { Field } from '../../../@types/index';
+import type {
+  FieldWithoutIdAndUser,
+  FieldWithoutId,
+} from '../../../@types/index';
 import ModalMessage from '../../ui/ModalMessage.svelte';
+import { firestoreUseCase } from '../../../middleware/firestoreClient';
+import { getPhotoUrls } from '../../../middleware/storageClient';
 
 const tags = ['wifi', 'date', 'study', 'reserve', 'stand', 'alone'];
 const stars = [1, 2, 3, 4, 5];
 const openOrClose = ['開店', '閉店'];
 
-let fields: Field = {
+let fields: FieldWithoutIdAndUser = {
   shopName: '',
   station: '',
   photoUrls: [],
@@ -44,30 +47,6 @@ onMount(() => {
   unsub();
   console.log(user, 'get user store on mount');
 });
-
-const getPhotoUrls = async () => {
-  const promises = localPhotos.map(async (file): Promise<string> => {
-    const data = await loadImage(file, {
-      maxWidth: 500,
-      canvas: true,
-    });
-    return new Promise((resolve, reject) => {
-      (data.image as HTMLCanvasElement).toBlob(
-        async (blob) => {
-          if (!blob) return reject('error');
-          const uploadPath = `photos/${user.uid}/${file.name}`;
-          const img = await projectStorage.ref(uploadPath).put(blob);
-          const imgUrl = await img.ref.getDownloadURL();
-          resolve(imgUrl);
-        },
-        file.type,
-        0.7,
-      );
-    });
-  });
-
-  fields.photoUrls = await Promise.all(promises);
-};
 
 const handleUpload = (e) => {
   localPhotos = e.detail;
@@ -104,13 +83,15 @@ const submitHandler = async () => {
   }
   // add post
   if (valid) {
-    await getPhotoUrls();
-    // NOTE:上記でFileでなくなるのでエラーが起きる
     const { uid, displayName, photoURL, email } = user;
-    let post = { ...fields, user: { uid, displayName, photoURL, email } };
+    fields.photoUrls = await getPhotoUrls(localPhotos, uid);
+    let post: FieldWithoutId = {
+      ...fields,
+      user: { uid, displayName, photoURL, email },
+    };
     console.log(post, 'post');
     try {
-      projectFirestore.collection('shops').add(post);
+      firestoreUseCase.addDocument(post);
       openModal();
     } catch (error) {
       console.log(error);
@@ -126,7 +107,6 @@ const openModal = () => {
 const closeModal = () => {
   setToggleModal = false;
   document.body.style.overflow = '';
-  console.log('close-modal');
   navigate('/', { replace: true });
 };
 </script>

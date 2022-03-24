@@ -1,40 +1,82 @@
 <script lang="ts">
+import { onMount } from 'svelte';
+// import { navigate } from 'svelte-routing';
 import ShopModalForm from './ShopModalForm.svelte';
+import { authStore } from '../../../store/authStore';
+import type { firebase } from '../../../firebase/config';
+import { timestamp } from '../../../firebase/config';
+import { firestoreUseCase } from '../../../middleware/firestoreClient';
+import type { Comment } from '../../../@types/index';
+export let id;
+export let comments: Array<Comment>;
+
 let setToggleModal = false;
 let comment = '';
+let user: firebase.User;
+
+const unsub = authStore.subscribe((data) => {
+  user = data;
+});
+
+onMount(async () => {
+  unsub();
+});
 
 const openModal = () => {
-  console.log('open-modal');
   setToggleModal = true;
   document.body.style.overflow = 'hidden';
 };
 const closeModal = () => {
-  console.log('close-modal');
   setToggleModal = false;
   document.body.style.overflow = '';
   comment = '';
 };
 
 const postComment = () => {
-  console.log(comment, 'post-comment');
+  const { displayName, photoURL } = user;
+  const post = {
+    id: Math.random(),
+    content: comment,
+    displayName,
+    photoURL,
+    createdAt: timestamp.fromDate(new Date()),
+  };
+  firestoreUseCase.addSubDocument(post, id, 'comment');
 };
 </script>
 
 <div class="shop-comment-container">
-  {#each [...Array(5)] as _, index}
-    <div class="balloon6">
-      <div class="faceicon">
-        <img src="https://placehold.jp/200x200.png" class="" alt="" />
-      </div>
-      <div class="chatting">
-        <div class="says">
-          <p>
-            これはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれれはテストこれはテストこれは
-          </p>
+  {#if comments.length !== 0}
+    {#each comments as comment}
+      <div class="balloon6">
+        <div class="faceicon">
+          <img src="{comment.photoURL}" class="" alt="" />
+        </div>
+        <div class="chatting">
+          <div class="says">
+            <p>
+              {comment.content}
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-  {/each}
+    {/each}
+  {:else}
+    {#each [...Array(3)] as _, index}
+      <div class="balloon6">
+        <div class="faceicon">
+          <img src="https://placehold.jp/200x200.png" class="" alt="" />
+        </div>
+        <div class="chatting">
+          <div class="says">
+            <p>
+              これはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれれはテストこれはテストこれは
+            </p>
+          </div>
+        </div>
+      </div>
+    {/each}
+  {/if}
   <div class="button-wrapper">
     <button class="btn" on:click="{openModal}">追加する</button>
     <button class="btn">もっと見る</button>

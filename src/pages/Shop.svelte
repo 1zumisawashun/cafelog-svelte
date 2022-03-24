@@ -3,22 +3,14 @@ export let id;
 export let ready;
 import ShopDetail from '../components/model/shop/ShopDetail.svelte';
 import { onMount } from 'svelte';
-import { projectFirestore } from '../firebase/config';
 import Loading from '../components/ui/Loading.svelte';
-
-let shop: any = {};
-
-const getFirestore = async () => {
-  const ref = await projectFirestore.collection('shops').doc(id);
-  const snapshot = await ref.get();
-  const result = { ...snapshot.data(), id: snapshot.id };
-  console.log(result);
-  shop = result;
-};
+import { firebaseUseCase } from '../middleware/firebaseClient';
+import type { Field } from '../@types/index';
+let shop: Field;
 
 onMount(async () => {
-  getFirestore();
-  console.log(shop, 'shop details');
+  shop = await firebaseUseCase.fetchItem(id);
+  console.log(shop, 'firebaseUseCase on Shop.svelte');
 });
 </script>
 
@@ -26,6 +18,7 @@ onMount(async () => {
   {#if !shop}
     <Loading />
   {:else}
+    <!-- このタイミングでコメントと写真を送る -->
     <ShopDetail ready="{ready}" shop="{shop}" />
   {/if}
 </div>
