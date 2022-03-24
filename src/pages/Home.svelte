@@ -1,17 +1,12 @@
 <script lang="ts">
 import { onMount } from 'svelte';
-import { projectFirestore } from '../firebase/config';
 import ShopList from '../components/model/shop/ShopList.svelte';
-import { shopStore } from '../store/shopStore';
 import Loading from '../components/ui/Loading.svelte';
+import { db } from '../middleware/firebaseClient';
 let shops: Array<any> = [];
 
-const unsub = shopStore.subscribe((data) => {
-  shops = [...shops, ...data];
-});
-
 const getFirestore = async () => {
-  const ref = await projectFirestore.collection('shops');
+  const ref = db.shops;
   const snapshot = await ref.get();
   const result = snapshot.docs.map((doc) => {
     return { ...doc.data(), id: doc.id };
@@ -20,9 +15,7 @@ const getFirestore = async () => {
 };
 
 onMount(async () => {
-  unsub();
   getFirestore();
-  console.log(shops, 'shop');
 });
 </script>
 
