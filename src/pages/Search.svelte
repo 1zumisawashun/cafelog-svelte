@@ -1,9 +1,9 @@
 <script lang="ts">
-import SearchForm from '../components/model/search/SearchForm.svelte';
+import Loading from '../components/ui/Loading.svelte';
 </script>
 
 <div class="common-container _pt-5 _pb-5">
-  <SearchForm />
+  <Loading />
 </div>
 
 <style lang="scss"></style>
