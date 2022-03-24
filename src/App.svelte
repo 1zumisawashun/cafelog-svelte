@@ -7,6 +7,7 @@ import Post from './pages/Post.svelte';
 import Search from './pages/Search.svelte';
 import User from './pages/User.svelte';
 import Shop from './pages/Shop.svelte';
+import Result from './pages/Result.svelte';
 export let ready;
 // import Map from './components/model/shop/ShopMap.svelte';
 </script>
@@ -34,6 +35,9 @@ export let ready;
       </Route>
       <Route path="/search">
         <Search />
+      </Route>
+      <Route path="/search/result">
+        <Result />
       </Route>
       <Route path="/users/:id" let:params>
         <User />
