@@ -1,3 +1,4 @@
+import type { firebase } from '../firebase/config';
 export type WhereFilterOp =
   | '<'
   | '<='
@@ -11,3 +12,5 @@ export type WhereFilterOp =
   | 'not-in';
 
 export type OrderByDirection = 'desc' | 'asc';
+
+export type firebase = firebase;

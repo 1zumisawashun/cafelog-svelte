@@ -1,23 +1,19 @@
 <script lang="ts">
+import { onMount, onDestroy } from 'svelte';
 import { style } from '../../middleware/style';
-
-const scrollTop = (): number => {
-  let scrollingElementTop: number = 0;
-
-  if (document.scrollingElement) {
-    scrollingElementTop = document.scrollingElement.scrollTop;
-  }
-
-  return Math.max(
-    window.scrollY,
-    window.pageYOffset,
-    document.body.scrollTop,
-    document.documentElement.scrollTop,
-    scrollingElementTop,
-  );
-};
+import { scrollTop } from '../../middleware/utilities';
 
 let styles = { top: `${scrollTop()}px` };
+
+onMount(() => {
+  document.body.style.overflow = 'hidden';
+  console.log('loading start');
+});
+
+onDestroy(() => {
+  document.body.style.overflow = '';
+  console.log('loading end');
+});
 </script>
 
 <div class="overlay" use:style="{styles}">

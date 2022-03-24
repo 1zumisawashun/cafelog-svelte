@@ -5,7 +5,7 @@ import { Link, Router } from 'svelte-routing';
 
 <Router>
   <div class="shop-card-container">
-    <Link to="{`shops/${shop.id}`}" class="link">
+    <Link to="{`/shops/${shop.id}`}" class="link">
       <div class="image">
         <img src="{shop.photoUrls[0]}" alt="" />
       </div>

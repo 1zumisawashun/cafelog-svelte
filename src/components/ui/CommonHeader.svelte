@@ -67,14 +67,12 @@ const closeModal = () => {
       {/if}
     </nav>
   </Router>
-</header>
 
-{#if setToggleModal}
-  <div class="common-container">
+  {#if setToggleModal}
     <ModalConfirm
       on:click-handler="{handleLogout}"
       on:close-modal="{closeModal}">
       <p class="message">本当にログアウトしますか？</p>
     </ModalConfirm>
-  </div>
-{/if}
+  {/if}
+</header>
