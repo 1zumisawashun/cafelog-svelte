@@ -1,10 +1,10 @@
 <script lang="ts">
 export let ready;
 export let shop;
-import ShopComment from './ShopComment.svelte';
-import ShopInformationTable from './ShopInformationTable.svelte';
+import ShopComment from './ShopTabComment.svelte';
+import ShopInformationTable from './ShopTabInformation.svelte';
 import Map from './ShopMap.svelte';
-import ShopPhoto from './ShopPhoto.svelte';
+import ShopPhoto from './ShopTabPhoto.svelte';
 import ShopTabHeader from './ShopTabHeader.svelte';
 import { firestoreUseCase } from '../../../middleware/firestoreClient';
 import { navigate } from 'svelte-routing';

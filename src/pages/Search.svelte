@@ -1,6 +1,6 @@
 <script lang="ts">
 import Loading from '../components/ui/Loading.svelte';
-import SearchForm from '../components/model/search/searchForm.svelte';
+import SearchMultiple from '../components/model/search/SearchMultiple.svelte';
 import { delay } from '../middleware/utilities';
 import { onMount } from 'svelte';
 let isPending: boolean = true;
@@ -15,7 +15,7 @@ onMount(async () => {
   {#if isPending}
     <Loading />
   {:else}
-    <SearchForm />
+    <SearchMultiple />
   {/if}
 </div>
 
