@@ -9,6 +9,7 @@ import css from 'rollup-plugin-css-only';
 // NOTE:下記から手動で追加
 import replace from '@rollup/plugin-replace';
 import scss from 'rollup-plugin-scss';
+import image from '@rollup/plugin-image';
 import dotenv from 'dotenv';
 dotenv.config();
 // FIXME:.svelte以外でホットリロードが走らない
@@ -50,6 +51,7 @@ export default {
   },
   plugins: [
     scss(),
+    image(),
     replace({
       // NOTE:buildの際に下記を追加する必要があったため記述
       preventAssignment: true,

@@ -9,7 +9,6 @@ import User from './pages/User.svelte';
 import Shop from './pages/Shop.svelte';
 import Result from './pages/Result.svelte';
 export let ready;
-// import Map from './components/model/shop/ShopMap.svelte';
 </script>
 
 <svelte:head>
@@ -20,9 +19,6 @@ export let ready;
   </script>
 </svelte:head>
 
-<!-- {#if ready}
-  <Map />
-{/if} -->
 <main>
   <Header />
   <Router>
