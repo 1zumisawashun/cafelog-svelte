@@ -6,6 +6,7 @@ import { authStore } from '../../store/authStore';
 import { projectAuth } from '../../firebase/config';
 import type { firebase } from '../../firebase/config';
 import ModalConfirm from '../ui/ModalConfirm.svelte';
+import Logo from '../../assets/image/logo.jpg';
 
 let user: firebase.User;
 let setToggleModal: boolean = false;
@@ -52,7 +53,7 @@ const closeModal = () => {
   <Router>
     <div class="logo">
       <!-- NOTE: public ディレクトリから呼ばないと表示できないっぽい -->
-      <img src="assets/image/logo.jpg" alt="" />
+      <img src="{Logo}" alt="" />
     </div>
     <nav class="navbar">
       <Link to="" class="item">home</Link>

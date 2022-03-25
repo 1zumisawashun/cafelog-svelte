@@ -1,6 +1,5 @@
 <script lang="ts">
 import { onMount } from 'svelte';
-// import { navigate } from 'svelte-routing';
 import ShopModalForm from './ShopModalForm.svelte';
 import InputFileSingle from './InputFileSingle.svelte';
 import type { Photo } from '../../../@types/index';
@@ -49,27 +48,19 @@ const postPhoto = async () => {
     createdAt: timestamp.fromDate(new Date()),
   };
   firestoreUseCase.addSubDocument(post, id, 'photo');
+  photos = [...photos, post];
 };
 </script>
 
 <div class="shop-photo-container">
-  {#if photos.length !== 0}
-    {#each photos as photo}
-      <div class="image-block">
-        <img src="{photo.photo}" class="picture" alt="" />
-      </div>
-    {/each}
-  {:else}
-    {#each [...Array(5)] as _, index}
-      <div class="image-block">
-        <img src="https://placehold.jp/200x200.png" class="picture" alt="" />
-      </div>
-    {/each}
-  {/if}
+  {#each photos as photo}
+    <div class="image-block">
+      <img src="{photo.photo}" class="picture" alt="" />
+    </div>
+  {/each}
 </div>
 <div class="button-wrapper">
   <button class="btn" on:click="{openModal}">追加する</button>
-  <button class="btn">もっと見る</button>
 </div>
 
 {#if setToggleModal}

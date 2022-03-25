@@ -60,7 +60,7 @@ const handleFile = async ({ target }) => {
     ※jpeg, png, bmp, gif, svg以外のファイル形式は表示されません
   </p>{/if}
 
-<div class="button-wrapper">
+<div class="button-wrapper _mt-0">
   <button class="btn"><label for="photos">upload</label></button>
 </div>
 

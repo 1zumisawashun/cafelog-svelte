@@ -1,6 +1,5 @@
 <script lang="ts">
 import { onMount } from 'svelte';
-// import { navigate } from 'svelte-routing';
 import ShopModalForm from './ShopModalForm.svelte';
 import { authStore } from '../../../store/authStore';
 import type { firebase } from '../../../firebase/config';
@@ -42,44 +41,27 @@ const postComment = () => {
     createdAt: timestamp.fromDate(new Date()),
   };
   firestoreUseCase.addSubDocument(post, id, 'comment');
+  comments = [...comments, post];
 };
 </script>
 
 <div class="shop-comment-container">
-  {#if comments.length !== 0}
-    {#each comments as comment}
-      <div class="balloon6">
-        <div class="faceicon">
-          <img src="{comment.photoURL}" class="" alt="" />
-        </div>
-        <div class="chatting">
-          <div class="says">
-            <p>
-              {comment.content}
-            </p>
-          </div>
+  {#each comments as comment}
+    <div class="balloon6">
+      <div class="faceicon">
+        <img src="{comment.photoURL}" class="" alt="" />
+      </div>
+      <div class="chatting">
+        <div class="says">
+          <p>
+            {comment.content}
+          </p>
         </div>
       </div>
-    {/each}
-  {:else}
-    {#each [...Array(3)] as _, index}
-      <div class="balloon6">
-        <div class="faceicon">
-          <img src="https://placehold.jp/200x200.png" class="" alt="" />
-        </div>
-        <div class="chatting">
-          <div class="says">
-            <p>
-              これはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれはテストこれれはテストこれはテストこれは
-            </p>
-          </div>
-        </div>
-      </div>
-    {/each}
-  {/if}
+    </div>
+  {/each}
   <div class="button-wrapper">
     <button class="btn" on:click="{openModal}">追加する</button>
-    <button class="btn">もっと見る</button>
   </div>
 </div>
 

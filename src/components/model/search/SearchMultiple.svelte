@@ -8,7 +8,7 @@ import { Router, Link, Route } from 'svelte-routing';
     {#each searchContent as content}
       <div class="search-block">
         <Link to="{`/search/result?tag=${content.tag}`}">
-          <img src="{`assets/image/${content.imagePath}.jpg`}" alt="" />
+          <img src="{content.imagePath}" alt="" />
           <div class="search-content">
             <p class="main-message">{content.mainMessage}</p>
             <p class="sub-message">
