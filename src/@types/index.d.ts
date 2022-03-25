@@ -15,6 +15,8 @@ export type Field = {
   longitude: string; // 緯度
   latitude: string; // 経度
   user: User;
+  isSaved?: boolean; // NOTE:追加
+  isVisited?: boolean; // NOTE:追加
 };
 
 export type User = {
@@ -32,6 +34,8 @@ export type FieldWithoutId = Omit<Field, 'id'>;
 export type FieldWithoutIdAndUser = Omit<Field, 'id' | 'user'>;
 
 export type FieldWithoutIdWithCreatedAt = CreatedAt & FieldWithoutId;
+
+export type FieldWithCreatedAt = CreatedAt & Field;
 
 export type Comment = {
   displayName: firebase.UserInfo.displayName;
@@ -66,4 +70,18 @@ export type FieldWithCommentAndPhoto = {
   user: User;
   comments: Array<Comment>; // NOTE:追加
   photos: Array<Photo>; // NOTE:追加
+  isSaved?: boolean; // NOTE:追加
+  isVisited?: boolean; // NOTE:追加
+};
+
+export type FieldWithCommentAndPhotoAndCreatedAt = CreatedAt &
+  FieldWithCommentAndPhoto;
+
+export type SavedOrVisitedUser = {
+  documents: User;
+  reference: firebase.firestore.DocumentReference<SavedOrVisitedUser>;
+};
+export type SavedOrVisitedShop = {
+  documents: FieldWithoutIdWithCreatedAt;
+  reference: firebase.firestore.DocumentReference<SavedOrVisited>;
 };

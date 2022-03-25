@@ -14,3 +14,10 @@ export type WhereFilterOp =
 export type OrderByDirection = 'desc' | 'asc';
 
 export type firebase = firebase;
+
+export type firebasePath = {
+  collection: string;
+  document: string;
+  subCollection: string;
+  subDocument: string;
+};

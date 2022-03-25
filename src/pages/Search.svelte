@@ -6,7 +6,7 @@ import { onMount } from 'svelte';
 let isPending: boolean = true;
 
 onMount(async () => {
-  await delay(1000);
+  await delay(500);
   isPending = false;
 });
 </script>

@@ -4,6 +4,7 @@ import ShopList from '../components/model/shop/ShopList.svelte';
 import Loading from '../components/ui/Loading.svelte';
 import { firebaseUseCase } from '../middleware/firebaseClient';
 import queryString from 'query-string';
+import { dammyShopData } from '../middleware/constants';
 const parsed = queryString.parse(location.search);
 let shops: Array<any> = [];
 
@@ -14,6 +15,10 @@ onMount(async () => {
     parsed.tag,
   ]);
   console.log(shops, 'firebaseUseCase on SearchResult.svelte');
+  if (shops.length < 6) {
+    const result = [...Array(6 - shops.length)].map(() => dammyShopData);
+    shops = [...shops, ...result];
+  }
 });
 </script>
 
