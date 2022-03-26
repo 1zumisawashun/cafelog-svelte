@@ -4,7 +4,6 @@ import { navigate } from 'svelte-routing';
 import InputFileMultiple from './InputFileMultiple.svelte';
 import InputRadio from './InputRadio.svelte';
 import InputCheckbox from './InputCheckbox.svelte';
-import { authStore } from '../../../store/authStore';
 import type { firebase } from '../../../firebase/config';
 import type {
   FieldWithoutIdAndUser,
@@ -13,6 +12,7 @@ import type {
 import ModalMessage from '../../ui/ModalMessage.svelte';
 import { firestoreUseCase } from '../../../middleware/firestoreClient';
 import { getPhotoUrls } from '../../../middleware/storageClient';
+import { initFirebaseAuth } from '../../../middleware/auth';
 
 const tags = ['wifi', 'date', 'study', 'reserve', 'stand', 'alone'];
 const stars = [1, 2, 3, 4, 5];
@@ -39,13 +39,9 @@ let user: firebase.User;
 let localPhotos: Array<File>;
 let setToggleModal: boolean = false;
 
-const unsub = authStore.subscribe((data) => {
-  user = data;
-});
-
-onMount(() => {
-  unsub();
-  console.log(user, 'get user store on mount');
+onMount(async () => {
+  user = await initFirebaseAuth();
+  console.log(user, '=========');
 });
 
 const handleUpload = (e) => {

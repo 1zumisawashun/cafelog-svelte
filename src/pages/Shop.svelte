@@ -5,12 +5,24 @@ import ShopDetail from '../components/model/shop/ShopDetail.svelte';
 import { onMount } from 'svelte';
 import Loading from '../components/ui/Loading.svelte';
 import { firebaseUseCase } from '../middleware/firebaseClient';
-import type { Field } from '../@types/index';
-let shop: Field;
+import type { FieldWithCommentAndPhoto } from '../@types/index';
+import { dammyCommentData, dammyPhotoData } from '../middleware/constants';
+import { initFirebaseAuth } from '../middleware/auth';
+let shop: FieldWithCommentAndPhoto;
 
 onMount(async () => {
-  shop = await firebaseUseCase.fetchItem(id);
-  console.log(shop, 'firebaseUseCase on Shop.svelte');
+  const user = await initFirebaseAuth();
+  shop = await firebaseUseCase.fetchItem(id, user.uid);
+  if (shop.comments.length < 3) {
+    const result = [...Array(3 - shop.comments.length)].map(
+      () => dammyCommentData,
+    );
+    shop.comments = [...shop.comments, ...result];
+  }
+  if (shop.photos.length < 6) {
+    const result = [...Array(6 - shop.photos.length)].map(() => dammyPhotoData);
+    shop.photos = [...shop.photos, ...result];
+  }
 });
 </script>
 
