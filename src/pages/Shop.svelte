@@ -6,12 +6,14 @@ import { onMount } from 'svelte';
 import Loading from '../components/ui/Loading.svelte';
 import { firebaseUseCase } from '../middleware/firebaseClient';
 import type { FieldWithCommentAndPhoto } from '../@types/index';
+import type { firebase } from '../firebase/config';
 import { dammyCommentData, dammyPhotoData } from '../middleware/constants';
 import { initFirebaseAuth } from '../middleware/auth';
 let shop: FieldWithCommentAndPhoto;
+let user: firebase.User;
 
 onMount(async () => {
-  const user = await initFirebaseAuth();
+  user = await initFirebaseAuth();
   shop = await firebaseUseCase.fetchItem(id, user.uid);
   if (shop.comments.length < 3) {
     const result = [...Array(3 - shop.comments.length)].map(
@@ -30,8 +32,7 @@ onMount(async () => {
   {#if !shop}
     <Loading />
   {:else}
-    <!-- このタイミングでコメントと写真を送る -->
-    <ShopDetail ready="{ready}" shop="{shop}" />
+    <ShopDetail ready="{ready}" shop="{shop}" user="{user}" />
   {/if}
 </div>
 

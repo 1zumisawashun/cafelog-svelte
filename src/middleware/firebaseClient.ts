@@ -7,10 +7,15 @@ import type {
   Field,
   Photo,
   Comment,
-  FieldWithCommentAndPhoto,
+  FieldWithCommentAndPhotoAndCreatedAt,
+  FieldWithCreatedAt,
+  FieldWithoutIdWithCreatedAt,
+  SavedOrVisitedShop,
+  SavedOrVisitedUser,
 } from '../@types/index';
-import type { WhereFilterOp } from '../@types/firebase';
+import type { WhereFilterOp, firebasePath } from '../@types/firebase';
 import type { firebase } from '../firebase/config';
+import { convertedPath } from '../middleware/utilities';
 class FirebaseUseCase {
   /**
    * 参照①
@@ -51,17 +56,36 @@ class FirebaseUseCase {
   }
   /**
    * 参照③
-   * comment photo を含めた一つの shop を取得する
+   * サブコレクションを含めた一つの shop を取得する
    */
-  async fetchItem(id: string): Promise<FieldWithCommentAndPhoto> {
-    const shopQuery = documentPoint<Field>('shops', id);
+  async fetchItem(
+    id: string,
+    uid: string,
+  ): Promise<FieldWithCommentAndPhotoAndCreatedAt> {
+    const shopQuery = documentPoint<FieldWithCreatedAt>('shops', id);
     const shopSnapshot = await shopQuery.get();
-    const commentMap = await this.fetchSubAll<Comment>(id, 'comment');
-    const photoMap = await this.fetchSubAll<Photo>(id, 'photo');
 
-    const shopItem: FieldWithCommentAndPhoto = {
+    const commentMap = await this.fetchSubAll<Comment>(
+      convertedPath(`/shops/${id}/comment`),
+    );
+    const photoMap = await this.fetchSubAll<Photo>(
+      convertedPath(`/shops/${id}/photo`),
+    );
+    const savedMap = await this.fetchSubAll<SavedOrVisitedUser>(
+      convertedPath(`/shops/${id}/saved`),
+    );
+    const visitedMap = await this.fetchSubAll<SavedOrVisitedUser>(
+      convertedPath(`/shops/${id}/visited`),
+    );
+
+    const savedResult = savedMap.map((el) => el.documents.uid === uid);
+    const visitedResult = visitedMap.map((el) => el.documents.uid === uid);
+
+    const shopItem: FieldWithCommentAndPhotoAndCreatedAt = {
       id: shopSnapshot.id,
       ...shopSnapshot.data(),
+      isSaved: Boolean(savedResult.length),　// NOTE:Partialしている
+      isVisited: Boolean(visitedResult.length), // NOTE:Partialしている
       comments: commentMap,
       photos: photoMap,
     };
@@ -70,10 +94,18 @@ class FirebaseUseCase {
   }
   /**
    * 参照④
-   * 全ての comment もしくは photo を取得する
+   * 該当する全てのサブコレクションを取得する
    */
-  async fetchSubAll<T>(id: string, subCollection: string): Promise<T[]> {
-    const shopQuery = subCollectionPoint<Field, T>('shops', id, subCollection);
+  async fetchSubAll<T>({
+    collection,
+    document,
+    subCollection,
+  }: firebasePath): Promise<T[]> {
+    const shopQuery = subCollectionPoint<FieldWithoutIdWithCreatedAt, T>(
+      collection,
+      document,
+      subCollection,
+    );
     const shopSnapshot = await shopQuery.get();
     return await Promise.all(
       shopSnapshot.docs.map(async (doc) => {
