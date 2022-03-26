@@ -12,6 +12,7 @@ import type {
   FieldWithoutIdWithCreatedAt,
   SavedOrVisitedShop,
   SavedOrVisitedUser,
+  User,
 } from '../@types/index';
 import type { WhereFilterOp, firebasePath } from '../@types/firebase';
 import type { firebase } from '../firebase/config';
@@ -84,7 +85,7 @@ class FirebaseUseCase {
     const shopItem: FieldWithCommentAndPhotoAndCreatedAt = {
       id: shopSnapshot.id,
       ...shopSnapshot.data(),
-      isSaved: Boolean(savedResult.length),　// NOTE:Partialしている
+      isSaved: Boolean(savedResult.length), // NOTE:Partialしている
       isVisited: Boolean(visitedResult.length), // NOTE:Partialしている
       comments: commentMap,
       photos: photoMap,
@@ -101,7 +102,7 @@ class FirebaseUseCase {
     document,
     subCollection,
   }: firebasePath): Promise<T[]> {
-    const shopQuery = subCollectionPoint<FieldWithoutIdWithCreatedAt, T>(
+    const shopQuery = subCollectionPoint<FieldWithoutIdWithCreatedAt | User, T>(
       collection,
       document,
       subCollection,
@@ -110,6 +111,7 @@ class FirebaseUseCase {
     return await Promise.all(
       shopSnapshot.docs.map(async (doc) => {
         const shopItems: T = {
+          id: doc.id,
           ...doc.data(),
         };
         return shopItems;

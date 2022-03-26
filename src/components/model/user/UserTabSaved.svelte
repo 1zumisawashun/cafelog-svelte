@@ -1,6 +1,6 @@
 <script lang="ts">
-export let shops: Array<any>;
 import ShopCard from '../shop/ShopCard.svelte';
+export let shops;
 </script>
 
 <div class="user-tab-container">

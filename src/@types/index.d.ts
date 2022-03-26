@@ -82,6 +82,6 @@ export type SavedOrVisitedUser = {
   reference: firebase.firestore.DocumentReference<SavedOrVisitedUser>;
 };
 export type SavedOrVisitedShop = {
-  documents: FieldWithoutIdWithCreatedAt;
+  documents: FieldWithCreatedAt;
   reference: firebase.firestore.DocumentReference<SavedOrVisited>;
 };

@@ -13,6 +13,7 @@ import type {
   SavedOrVisitedUser,
   SavedOrVisitedShop,
   User,
+  FieldWithCreatedAt,
 } from '../@types/index';
 import { timestamp } from '../firebase/config';
 import type { firebasePath } from '../@types/firebase';
@@ -58,7 +59,7 @@ class FirestoreUseCase {
    * サブドキュメントへ追加①
    */
   async addSubDocumentWithShopRef(
-    doc: FieldWithoutIdWithCreatedAt,
+    doc: FieldWithCreatedAt,
     { collection, document, subCollection, subDocument }: firebasePath,
   ) {
     const shopQuery = await subDocumentPoint<
