@@ -8,7 +8,7 @@ import { firebaseUseCase } from '../middleware/firebaseClient';
 import type { FieldWithCommentAndPhoto } from '../@types/index';
 import type { firebase } from '../firebase/config';
 import { dammyCommentData, dammyPhotoData } from '../middleware/constants';
-import { initFirebaseAuth } from '../middleware/auth';
+import { initFirebaseAuth } from '../middleware/authClient';
 let shop: FieldWithCommentAndPhoto;
 let user: firebase.User;
 

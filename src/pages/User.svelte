@@ -9,7 +9,7 @@ import type {
   FieldWithCreatedAt
 } from '../@types/index';
 import { convertedPath } from '../middleware/utilities';
-import { initFirebaseAuth } from '../middleware/auth';
+import { initFirebaseAuth } from '../middleware/authClient';
 let savedShops: Array<FieldWithCreatedAt> = [];
 let visitedShops: Array<FieldWithCreatedAt> = [];
 

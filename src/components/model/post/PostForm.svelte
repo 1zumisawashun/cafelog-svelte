@@ -12,7 +12,7 @@ import type {
 import ModalMessage from '../../ui/ModalMessage.svelte';
 import { firestoreUseCase } from '../../../middleware/firestoreClient';
 import { getPhotoUrls } from '../../../middleware/storageClient';
-import { initFirebaseAuth } from '../../../middleware/auth';
+import { initFirebaseAuth } from '../../../middleware/authClient';
 
 const tags = ['wifi', 'date', 'study', 'reserve', 'stand', 'alone'];
 const stars = [1, 2, 3, 4, 5];
@@ -41,7 +41,6 @@ let setToggleModal: boolean = false;
 
 onMount(async () => {
   user = await initFirebaseAuth();
-  console.log(user, '=========');
 });
 
 const handleUpload = (e) => {

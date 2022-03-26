@@ -2,7 +2,7 @@ import {
   collectionPoint,
   documentPoint,
   subCollectionPoint,
-} from './firebaseConverter';
+} from './converter';
 import type {
   Field,
   Photo,
@@ -10,7 +10,7 @@ import type {
   FieldWithCommentAndPhotoAndCreatedAt,
   FieldWithCreatedAt,
   FieldWithoutIdWithCreatedAt,
-  SavedOrVisitedShop,
+  // SavedOrVisitedShop,
   SavedOrVisitedUser,
   User,
 } from '../@types/index';

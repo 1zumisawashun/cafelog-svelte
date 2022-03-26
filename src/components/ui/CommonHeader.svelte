@@ -1,5 +1,5 @@
 <script lang="ts">
-import { login, logout, annoymouse } from '../../middleware/auth';
+import { login, logout, annoymouse } from '../../middleware/authClient';
 import { Router, Link, Route } from 'svelte-routing';
 import { onMount } from 'svelte';
 import { authStore } from '../../store/authStore';

@@ -3,7 +3,7 @@ import {
   documentPoint,
   subCollectionPoint,
   subDocumentPoint,
-} from './firebaseConverter';
+} from './converter';
 import type {
   Field,
   FieldWithoutIdWithCreatedAt,
