@@ -10,8 +10,10 @@ import ShopTabHeader from './ShopTabHeader.svelte';
 import { firestoreUseCase } from '../../../middleware/firestoreClient';
 import { navigate } from 'svelte-routing';
 import ModalConfirm from '../../../components/ui/ModalConfirm.svelte';
-import SaveIcon from '../../../assets/icon/icon_save.svg';
-import FlagIcon from '../../../assets/icon/icon_flag.svg';
+import SaveOnIcon from '../../../assets/icon/icon_save_on.svg';
+import FlagOnIcon from '../../../assets/icon/icon_flag_on.svg';
+import SaveOffIcon from '../../../assets/icon/icon_save_off.svg';
+import FlagOffIcon from '../../../assets/icon/icon_flag_off.svg';
 import { convertedPath } from '../../../middleware/utilities';
 
 //tabs
@@ -119,24 +121,24 @@ const handleSaved = () => {
   <div class="button-wrapper _mt-2">
     {#if !isVisited}
       <button class="btn" on:click="{handleVisited}">
-        <img src="{FlagIcon}" alt="" />
+        <img src="{FlagOffIcon}" alt="" />
         <span class="text">行ったことがある</span>
       </button>
     {:else if isVisited}
-      <button class="btn" on:click="{handleVisited}">
-        <img src="{FlagIcon}" alt="" />
-        <span class="text">行ったことがない</span>
+      <button class="btn -orenge" on:click="{handleVisited}">
+        <img src="{FlagOnIcon}" alt="" />
+        <span class="text -orenge">行ったことがある</span>
       </button>
     {/if}
     {#if !isSaved}
       <button class="btn" on:click="{handleSaved}">
-        <img src="{SaveIcon}" alt="" />
+        <img src="{SaveOffIcon}" alt="" />
         <span class="text">保存する</span>
       </button>
     {:else if isSaved}
-      <button class="btn" on:click="{handleSaved}">
-        <img src="{SaveIcon}" alt="" />
-        <span class="text">解除する</span>
+      <button class="btn -orenge" on:click="{handleSaved}">
+        <img src="{SaveOnIcon}" alt="" />
+        <span class="text -orenge">保存する</span>
       </button>
     {/if}
     <button class="btn" on:click="{openModal}">削除</button>

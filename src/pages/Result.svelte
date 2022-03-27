@@ -5,11 +5,14 @@ import Loading from '../components/ui/Loading.svelte';
 import { firebaseUseCase } from '../middleware/firebaseClient';
 import queryString from 'query-string';
 import { dammyShopData } from '../middleware/constants';
+import { initFirebaseAuth } from '../middleware/authClient';
+import type { FieldWithCreatedAt } from '../@types/index';
 const parsed = queryString.parse(location.search);
-let shops: Array<any> = [];
+let shops: Array<FieldWithCreatedAt> = [];
 
 onMount(async () => {
-  shops = await firebaseUseCase.fetchQueryAll([
+  const user = await initFirebaseAuth();
+  shops = await firebaseUseCase.fetchQueryAll(user.uid, [
     'tags',
     'array-contains',
     parsed.tag,

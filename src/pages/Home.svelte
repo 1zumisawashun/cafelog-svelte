@@ -3,11 +3,13 @@ import { onMount } from 'svelte';
 import ShopList from '../components/model/shop/ShopList.svelte';
 import Loading from '../components/ui/Loading.svelte';
 import { firebaseUseCase } from '../middleware/firebaseClient';
-import type { Field } from '../@types/index';
-let shops: Array<Field> = [];
+import type { FieldWithCreatedAt } from '../@types/index';
+import { initFirebaseAuth } from '../middleware/authClient';
+let shops: Array<FieldWithCreatedAt> = [];
 
 onMount(async () => {
-  shops = await firebaseUseCase.fetchAll();
+  const user = await initFirebaseAuth();
+  shops = await firebaseUseCase.fetchAll(user.uid);
   console.log(shops, 'firebaseUseCase on Home.svelte');
 });
 </script>

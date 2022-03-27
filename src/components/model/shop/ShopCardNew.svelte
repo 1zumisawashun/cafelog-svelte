@@ -1,8 +1,10 @@
 <script lang="ts">
 export let shop: any;
 import { Link, Router } from 'svelte-routing';
-import SaveIcon from '../../../assets/icon/icon_save.svg';
-import FlagIcon from '../../../assets/icon/icon_flag.svg';
+import SaveOnIcon from '../../../assets/icon/icon_save_on.svg';
+import FlagOnIcon from '../../../assets/icon/icon_flag_on.svg';
+import SaveOffIcon from '../../../assets/icon/icon_save_off.svg';
+import FlagOffIcon from '../../../assets/icon/icon_flag_off.svg';
 </script>
 
 <Router>
@@ -20,10 +22,16 @@ import FlagIcon from '../../../assets/icon/icon_flag.svg';
       <div class="station-and-save">
         <div class="station">{shop.station}駅</div>
         <div class="save">
-          <img src="{FlagIcon}" alt="" />
-          <img src="{SaveIcon}" alt="" />
-          <span class="like"></span>
-          <span class="visited"></span>
+          {#if shop.isVisited}
+            <img src="{FlagOnIcon}" alt="" />
+          {:else}
+            <img src="{FlagOffIcon}" alt="" />
+          {/if}
+          {#if shop.isSaved}
+            <img src="{SaveOnIcon}" alt="" />
+          {:else}
+            <img src="{SaveOffIcon}" alt="" />
+          {/if}
         </div>
       </div>
     </div>

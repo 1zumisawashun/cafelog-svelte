@@ -64,6 +64,24 @@ export const dammyShopData = {
   photoUrls: ['https://placehold.jp/200x200.png'],
   shopName: 'ダミーダミーダミーダミー',
   station: 'ダミーダミー',
+  createdAt: timestamp.fromDate(new Date()),
+  comment: '',
+  address: '',
+  tel: '',
+  tags: [],
+  starRating: 0,
+  businessHours: '',
+  openOrClose: '',
+  longitude: '',
+  latitude: '',
+  isSaved: false,
+  isVisited: false,
+  user: {
+    displayName: '',
+    photoURL: '',
+    uid: '',
+    email: '',
+  },
 };
 
 export const dammyCommentData = {
