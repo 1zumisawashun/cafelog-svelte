@@ -27,3 +27,17 @@ export const convertedPath = (path: string): firebasePath => {
     subDocument: result[4] ?? '',
   };
 };
+
+// NOTE:お店が投稿されてから5日経っているか判定する
+export const checkNewShop = (date: Date): boolean => {
+  if (!date) {
+    return false;
+  }
+  const postDate = date.getTime();
+  const today = new Date();
+  const fiveDaysBefore = today.setDate(today.getDate() - 5);
+  if (postDate > fiveDaysBefore) {
+    return true;
+  }
+  return false;
+};

@@ -64,7 +64,7 @@ export const dammyShopData = {
   photoUrls: ['https://placehold.jp/200x200.png'],
   shopName: 'ダミーダミーダミーダミー',
   station: 'ダミーダミー',
-  createdAt: timestamp.fromDate(new Date()),
+  createdAt: timestamp.fromDate(new Date(2017, 0, 15, 22, 30)),
   comment: '',
   address: '',
   tel: '',
