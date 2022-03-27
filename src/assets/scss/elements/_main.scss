@@ -48,6 +48,10 @@ body {
     background: $black;
     color: $white;
   }
+  &.-orenge {
+    color: $ultimate-orange;
+    border: 1px solid $ultimate-orange;
+  }
 }
 
 .btn:hover {
@@ -57,4 +61,8 @@ body {
 .btn.-inverse:hover {
   color: $black;
   background-color: $white;
+}
+.btn.-orenge:hover {
+  color: $white;
+  background-color: $ultimate-orange;
 }
