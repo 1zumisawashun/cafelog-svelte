@@ -8,11 +8,13 @@ import type { firebase } from '../../../firebase/config';
 import { timestamp } from '../../../firebase/config';
 import { firestoreUseCase } from '../../../middleware/firestoreClient';
 import { getPhotoUrls } from '../../../middleware/storageClient';
+import ModalError from '../../../components/ui/ModalError.svelte';
 export let id;
 export let photos: Array<Photo>;
 
 let localPhotos: Array<File>;
 let setToggleModal = false;
+let setToggleModalError: boolean = false;
 let user: firebase.User;
 
 const unsub = authStore.subscribe((data) => {
@@ -28,6 +30,10 @@ const handleUpload = (e) => {
 };
 
 const openModal = () => {
+  if (!user) {
+    openModalError();
+    return;
+  }
   setToggleModal = true;
   document.body.style.overflow = 'hidden';
 };
@@ -35,6 +41,16 @@ const closeModal = () => {
   setToggleModal = false;
   document.body.style.overflow = '';
   localPhotos = null;
+};
+
+const openModalError = () => {
+  setToggleModalError = true;
+  document.body.style.overflow = 'hidden';
+};
+
+const closeModalError = () => {
+  setToggleModalError = false;
+  document.body.style.overflow = '';
 };
 
 const postPhoto = async () => {
@@ -73,4 +89,9 @@ const postPhoto = async () => {
       </div>
     </div>
   </ShopModalForm>
+{/if}
+{#if setToggleModalError}
+  <ModalError on:close-modal="{closeModalError}">
+    <p class="message">ログインしてください</p>
+  </ModalError>
 {/if}

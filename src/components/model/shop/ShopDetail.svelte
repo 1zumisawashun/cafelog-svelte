@@ -15,11 +15,13 @@ import FlagOnIcon from '../../../assets/icon/icon_flag_on.svg';
 import SaveOffIcon from '../../../assets/icon/icon_save_off.svg';
 import FlagOffIcon from '../../../assets/icon/icon_flag_off.svg';
 import { convertedPath } from '../../../middleware/utilities';
+import ModalError from '../../../components/ui/ModalError.svelte';
 
 //tabs
 let items = ['Shop Information', 'Shop Comment', 'Shop Photo'];
 let activeItem = 'Shop Information';
 let setToggleModal: boolean = false;
+let setToggleModalError: boolean = false;
 let isSaved: boolean = shop.isSaved;
 let isVisited: boolean = shop.isVisited;
 
@@ -33,6 +35,10 @@ const handleDelete = () => {
 };
 
 const openModal = () => {
+  if (!user) {
+    openModalError();
+    return;
+  }
   setToggleModal = true;
   document.body.style.overflow = 'hidden';
 };
@@ -41,8 +47,21 @@ const closeModal = () => {
   setToggleModal = false;
   document.body.style.overflow = '';
 };
+const openModalError = () => {
+  setToggleModalError = true;
+  document.body.style.overflow = 'hidden';
+};
+
+const closeModalError = () => {
+  setToggleModalError = false;
+  document.body.style.overflow = '';
+};
 
 const handleVisited = () => {
+  if (!user) {
+    openModalError();
+    return;
+  }
   const { displayName, photoURL, uid, email } = user;
   if (!isVisited) {
     try {
@@ -58,7 +77,6 @@ const handleVisited = () => {
       return;
     } catch (error) {
       console.log(error);
-      // NOTE:モーダル出したい
     }
   }
   if (isVisited) {
@@ -73,14 +91,16 @@ const handleVisited = () => {
       return;
     } catch (error) {
       console.log(error);
-      // NOTE:モーダル出したい
     }
   }
 };
 const handleSaved = () => {
+  if (!user) {
+    openModalError();
+    return;
+  }
   const { displayName, photoURL, uid, email } = user;
   if (!isSaved) {
-    console.log('動いている？？');
     try {
       firestoreUseCase.addSubDocumentWithUserRef(
         { displayName, photoURL, uid, email },
@@ -94,7 +114,6 @@ const handleSaved = () => {
       return;
     } catch (error) {
       console.log(error);
-      // NOTE:モーダル出したい
     }
   }
   if (isSaved) {
@@ -109,7 +128,6 @@ const handleSaved = () => {
       return;
     } catch (error) {
       console.log(error);
-      // NOTE:モーダル出したい
     }
   }
 };
@@ -165,5 +183,10 @@ const handleSaved = () => {
       on:close-modal="{closeModal}">
       <p class="message">本当に削除しますか？</p>
     </ModalConfirm>
+  {/if}
+  {#if setToggleModalError}
+    <ModalError on:close-modal="{closeModalError}">
+      <p class="message">ログインしてください</p>
+    </ModalError>
   {/if}
 </div>

@@ -6,10 +6,12 @@ import type { firebase } from '../../../firebase/config';
 import { timestamp } from '../../../firebase/config';
 import { firestoreUseCase } from '../../../middleware/firestoreClient';
 import type { Comment } from '../../../@types/index';
+import ModalError from '../../../components/ui/ModalError.svelte';
 export let id;
 export let comments: Array<Comment>;
 
 let setToggleModal = false;
+let setToggleModalError: boolean = false;
 let comment = '';
 let user: firebase.User;
 
@@ -22,6 +24,10 @@ onMount(async () => {
 });
 
 const openModal = () => {
+  if (!user) {
+    openModalError();
+    return;
+  }
   setToggleModal = true;
   document.body.style.overflow = 'hidden';
 };
@@ -29,6 +35,15 @@ const closeModal = () => {
   setToggleModal = false;
   document.body.style.overflow = '';
   comment = '';
+};
+const openModalError = () => {
+  setToggleModalError = true;
+  document.body.style.overflow = 'hidden';
+};
+
+const closeModalError = () => {
+  setToggleModalError = false;
+  document.body.style.overflow = '';
 };
 
 const postComment = () => {
@@ -77,4 +92,9 @@ const postComment = () => {
       </div>
     </div>
   </ShopModalForm>
+{/if}
+{#if setToggleModalError}
+  <ModalError on:close-modal="{closeModalError}">
+    <p class="message">ログインしてください</p>
+  </ModalError>
 {/if}

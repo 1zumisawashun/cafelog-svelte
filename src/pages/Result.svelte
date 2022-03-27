@@ -12,7 +12,7 @@ let shops: Array<FieldWithCreatedAt> = [];
 
 onMount(async () => {
   const user = await initFirebaseAuth();
-  shops = await firebaseUseCase.fetchQueryAll(user.uid, [
+  shops = await firebaseUseCase.fetchQueryAll(user?.uid, [
     'tags',
     'array-contains',
     parsed.tag,

@@ -14,7 +14,7 @@ let user: firebase.User;
 
 onMount(async () => {
   user = await initFirebaseAuth();
-  shop = await firebaseUseCase.fetchItem(id, user.uid);
+  shop = await firebaseUseCase.fetchItem(id, user?.uid);
   if (shop.comments.length < 3) {
     const result = [...Array(3 - shop.comments.length)].map(
       () => dammyCommentData,

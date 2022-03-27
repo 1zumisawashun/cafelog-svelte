@@ -4,13 +4,13 @@ import {
   subCollectionPoint,
 } from './converter';
 import type {
-  Field,
+  // Field,
   Photo,
   Comment,
   FieldWithCommentAndPhotoAndCreatedAt,
   FieldWithCreatedAt,
   FieldWithoutIdWithCreatedAt,
-  SavedOrVisitedShop,
+  // SavedOrVisitedShop,
   SavedOrVisitedUser,
   User,
 } from '../@types/index';
@@ -19,21 +19,22 @@ import type { firebase } from '../firebase/config';
 import { convertedPath } from '../middleware/utilities';
 class FirebaseUseCase {
   /**
-   * 参照①
+   * 参照①（未ログインユーザも参照する）
    * 全ての shop を取得する
    */
-  async fetchAll(uid: string): Promise<FieldWithCreatedAt[]> {
+  async fetchAll(uid: string | undefined): Promise<FieldWithCreatedAt[]> {
     const shopQuery = collectionPoint<FieldWithCreatedAt>('shops');
     const shopSnapshot = await shopQuery.get();
-
     return await Promise.all(
       shopSnapshot.docs.map(async (doc) => {
-        const result = await this.fetchSavedAndVisitedAll(doc.id, uid);
-
+        let result;
+        if (uid) {
+          result = await this.fetchSavedAndVisitedAll(doc.id, uid);
+        }
         const shopItems: FieldWithCreatedAt = {
           id: doc.id,
-          isSaved: Boolean(result.savedResult.length), // NOTE:Partialしている
-          isVisited: Boolean(result.visitedResult.length), // NOTE:Partialしている
+          isSaved: Boolean(result?.savedResult?.length), // NOTE:Partialしている
+          isVisited: Boolean(result?.visitedResult?.length), // NOTE:Partialしている
           ...doc.data(),
         };
 
@@ -42,11 +43,11 @@ class FirebaseUseCase {
     );
   }
   /**
-   * 参照②
+   * 参照②（未ログインユーザも参照する）
    * 条件に一致する shop を取得する
    */
   async fetchQueryAll(
-    uid: string,
+    uid: string | undefined,
     query: [string, WhereFilterOp, any],
   ): Promise<FieldWithCreatedAt[]> {
     let shopQuery = collectionPoint<FieldWithCreatedAt>('shops');
@@ -56,12 +57,14 @@ class FirebaseUseCase {
     const shopSnapshot = await shopQuery.get();
     return await Promise.all(
       shopSnapshot.docs.map(async (doc) => {
-        const result = await this.fetchSavedAndVisitedAll(doc.id, uid);
-
+        let result;
+        if (uid) {
+          result = await this.fetchSavedAndVisitedAll(doc.id, uid);
+        }
         const shopItems: FieldWithCreatedAt = {
           id: doc.id,
-          isSaved: Boolean(result.savedResult.length), // NOTE:Partialしている
-          isVisited: Boolean(result.visitedResult.length), // NOTE:Partialしている
+          isSaved: Boolean(result?.savedResult?.length), // NOTE:Partialしている
+          isVisited: Boolean(result?.visitedResult?.length), // NOTE:Partialしている
           ...doc.data(),
         };
         return shopItems;
@@ -69,12 +72,12 @@ class FirebaseUseCase {
     );
   }
   /**
-   * 参照③
+   * 参照③（未ログインユーザも参照する）
    * サブコレクションを含めた一つの shop を取得する
    */
   async fetchItem(
     id: string,
-    uid: string,
+    uid: string | undefined,
   ): Promise<FieldWithCommentAndPhotoAndCreatedAt> {
     const shopQuery = documentPoint<FieldWithCreatedAt>('shops', id);
     const shopSnapshot = await shopQuery.get();
@@ -85,13 +88,15 @@ class FirebaseUseCase {
     const photoMap = await this.fetchSubAll<Photo>(
       convertedPath(`/shops/${id}/photo`),
     );
-    const result = await this.fetchSavedAndVisitedAll(id, uid);
-
+    let result;
+    if (uid) {
+      result = await this.fetchSavedAndVisitedAll(id, uid);
+    }
     const shopItem: FieldWithCommentAndPhotoAndCreatedAt = {
       id: shopSnapshot.id,
       ...shopSnapshot.data(),
-      isSaved: Boolean(result.savedResult.length), // NOTE:Partialしている
-      isVisited: Boolean(result.visitedResult.length), // NOTE:Partialしている
+      isSaved: Boolean(result?.savedResult?.length), // NOTE:Partialしている
+      isVisited: Boolean(result?.visitedResult?.length), // NOTE:Partialしている
       comments: commentMap,
       photos: photoMap,
     };
