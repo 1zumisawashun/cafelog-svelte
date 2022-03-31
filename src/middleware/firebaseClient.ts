@@ -13,6 +13,7 @@ import type {
   // SavedOrVisitedShop,
   SavedOrVisitedUser,
   User,
+  FetchSavedAndVisitedAll,
 } from '../@types/index';
 import type { WhereFilterOp, firebasePath } from '../@types/firebase';
 import type { firebase } from '../firebase/config';
@@ -27,7 +28,7 @@ class FirebaseUseCase {
     const shopSnapshot = await shopQuery.get();
     return await Promise.all(
       shopSnapshot.docs.map(async (doc) => {
-        let result;
+        let result: FetchSavedAndVisitedAll;
         if (uid) {
           result = await this.fetchSavedAndVisitedAll(doc.id, uid);
         }
@@ -57,7 +58,7 @@ class FirebaseUseCase {
     const shopSnapshot = await shopQuery.get();
     return await Promise.all(
       shopSnapshot.docs.map(async (doc) => {
-        let result;
+        let result: FetchSavedAndVisitedAll;
         if (uid) {
           result = await this.fetchSavedAndVisitedAll(doc.id, uid);
         }
@@ -88,7 +89,7 @@ class FirebaseUseCase {
     const photoMap = await this.fetchSubAll<Photo>(
       convertedPath(`/shops/${id}/photo`),
     );
-    let result;
+    let result: FetchSavedAndVisitedAll;
     if (uid) {
       result = await this.fetchSavedAndVisitedAll(id, uid);
     }
@@ -135,10 +136,7 @@ class FirebaseUseCase {
   async fetchSavedAndVisitedAll(
     id: string,
     uid: string,
-  ): Promise<{
-    savedResult: boolean[];
-    visitedResult: boolean[];
-  }> {
+  ): Promise<FetchSavedAndVisitedAll> {
     const savedMap = await this.fetchSubAll<SavedOrVisitedUser>(
       convertedPath(`/shops/${id}/saved`),
     );
@@ -146,8 +144,8 @@ class FirebaseUseCase {
       convertedPath(`/shops/${id}/visited`),
     );
 
-    const savedResult = savedMap.map((el) => el.documents.uid === uid);
-    const visitedResult = visitedMap.map((el) => el.documents.uid === uid);
+    const savedResult = savedMap.filter((el) => el.documents.uid === uid);
+    const visitedResult = visitedMap.filter((el) => el.documents.uid === uid);
 
     return {
       savedResult,

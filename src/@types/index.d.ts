@@ -85,3 +85,8 @@ export type SavedOrVisitedShop = {
   documents: FieldWithCreatedAt;
   reference: firebase.firestore.DocumentReference<SavedOrVisited>;
 };
+
+export type FetchSavedAndVisitedAll = {
+  savedResult: Array<SavedOrVisitedUser>;
+  visitedResult: Array<SavedOrVisitedUser>;
+};
