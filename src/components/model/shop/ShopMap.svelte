@@ -1,19 +1,42 @@
-<script>
-// import mapStyles from './map-styles'; // optional
-
-let container;
-let map;
-let zoom = 8;
-let center = { lat: -34.397, lng: 150.644 };
-
+<script lang="ts">
 import { onMount } from 'svelte';
 
+export let address: string;
+let container;
+
+const initMap = (shopAddress) => {
+  const geocoder = new google.maps.Geocoder();
+  geocoder.geocode(
+    {
+      address: shopAddress,
+      region: 'jp',
+    },
+    function (results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        // 取得した座標をセット緯度経度をセット
+        const map_location = new google.maps.LatLng(
+          results[0].geometry.location.lat(),
+          results[0].geometry.location.lng(),
+        );
+        const map_options = {
+          zoom: 13,
+          center: map_location,
+          disableDefaultUI: true,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+        };
+
+        const map = new google.maps.Map(container, map_options);
+
+        new google.maps.Marker({
+          position: map_location,
+          map: map,
+        });
+      }
+    },
+  );
+};
 onMount(async () => {
-  map = new google.maps.Map(container, {
-    zoom,
-    center,
-    // styles: mapStyles, // optional
-  });
+  await initMap(address);
 });
 </script>
 

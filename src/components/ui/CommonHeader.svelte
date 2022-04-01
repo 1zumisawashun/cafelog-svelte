@@ -18,7 +18,6 @@ onMount(() => {
     if (auth) {
       authStore.set(auth);
       user = auth;
-      console.log(user, 'restore user information on store');
     } else {
       authStore.set(null);
     }

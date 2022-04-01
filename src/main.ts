@@ -10,6 +10,7 @@ const app = new App({
 interface GMapWindow extends Window {
   initMap: any;
 }
+
 declare const window: GMapWindow;
 
 window.initMap = function ready() {

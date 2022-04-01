@@ -101,7 +101,6 @@ class FirebaseUseCase {
       comments: commentMap,
       photos: photoMap,
     };
-    console.log(shopItem, 'shopItem');
     return shopItem;
   }
   /**

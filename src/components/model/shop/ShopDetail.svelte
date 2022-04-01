@@ -168,8 +168,10 @@ const handleSaved = () => {
       on:tabChange="{tabChange}" />
     {#if activeItem === 'Shop Information'}
       <ShopInformationTable />
-      {#if ready}
-        <Map />
+      {#if ready && shop?.address}
+        <Map address="{shop.address}" />
+      {:else if ready && !shop?.address}
+        <Map address="東京都渋谷区道玄坂1丁目12−1" />
       {/if}
     {:else if activeItem === 'Shop Comment'}
       <ShopComment id="{shop.id}" comments="{shop.comments}" />
