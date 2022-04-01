@@ -171,7 +171,7 @@ const handleSaved = () => {
       {#if ready && shop?.address}
         <Map address="{shop.address}" />
       {:else if ready && !shop?.address}
-        <Map address="東京都渋谷区道玄坂1丁目12−1" />
+        <Map address="東京都世田谷区駒沢1-23−1" />
       {/if}
     {:else if activeItem === 'Shop Comment'}
       <ShopComment id="{shop.id}" comments="{shop.comments}" />

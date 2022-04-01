@@ -9,9 +9,7 @@ let shops: Array<FieldWithCreatedAt> = [];
 
 onMount(async () => {
   const user = await initFirebaseAuth();
-  console.log(user, 'user');
   shops = await firebaseUseCase.fetchAll(user?.uid);
-  console.log(shops, 'firebaseUseCase on Home.svelte');
 });
 </script>
 
