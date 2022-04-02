@@ -1,7 +1,7 @@
 <script lang="ts">
-import ShopCard from '../shop/ShopCard.svelte';
-import ShopCardClose from '../shop/ShopCardClose.svelte';
-import ShopCardNew from '../shop/ShopCardNew.svelte';
+import ShopCard from './ShopCard.svelte';
+import ShopCardClose from './ShopCardClose.svelte';
+import ShopCardNew from './ShopCardNew.svelte';
 import { checkNewShop } from '../../../middleware/utilities';
 export let shops: Array<any>;
 </script>

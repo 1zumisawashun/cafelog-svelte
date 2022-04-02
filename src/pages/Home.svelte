@@ -1,6 +1,6 @@
 <script lang="ts">
 import { onMount } from 'svelte';
-import ShopList from '../components/model/shop/ShopList.svelte';
+import ShopList from '../components/model/home/ShopList.svelte';
 import Loading from '../components/ui/Loading.svelte';
 import { firebaseUseCase } from '../middleware/firebaseClient';
 import type { FieldWithCreatedAt } from '../@types/index';
