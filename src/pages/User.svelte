@@ -53,9 +53,9 @@ onMount(async () => {
 </script>
 
 <div class="common-container _pt-5 _pb-5">
-  <!-- {#if shops.length === 0}
+  {#if savedShops.length === 0 && visitedShops.length === 0}
     <Loading />
-  {:else} -->
-  <UserTab savedShops="{savedShops}" visitedShops="{visitedShops}" />
-  <!-- {/if} -->
+  {:else}
+    <UserTab savedShops="{savedShops}" visitedShops="{visitedShops}" />
+  {/if}
 </div>

@@ -1,10 +1,11 @@
 <script lang="ts">
-export let shop: any;
+export let shop: FieldWithCreatedAt;
 import { Link, Router } from 'svelte-routing';
 import SaveOnIcon from '../../../assets/icon/icon_save_on.svg';
 import FlagOnIcon from '../../../assets/icon/icon_flag_on.svg';
 import SaveOffIcon from '../../../assets/icon/icon_save_off.svg';
 import FlagOffIcon from '../../../assets/icon/icon_flag_off.svg';
+import type { FieldWithCreatedAt } from '../../../@types/index';
 </script>
 
 <Router>

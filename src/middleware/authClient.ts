@@ -5,7 +5,9 @@ export const initFirebaseAuth = (): Promise<firebase.User> => {
   return new Promise((resolve) => {
     const unsubscribe = projectAuth.onAuthStateChanged((user) => {
       // NOTE: user オブジェクトを resolve する
-      resolve(user);
+      if (user) {
+        resolve(user);
+      }
       // NOTE:登録解除
       unsubscribe();
     });
@@ -25,6 +27,7 @@ export const logout = async () => {
 export const login = async () => {
   try {
     const result = await projectAuth.signInWithPopup(provider);
+    if (!result.user) return;
     const { uid, displayName, photoURL, email } = result.user;
     projectFirestore.collection('users').doc(uid).set({
       uid,

@@ -35,6 +35,9 @@ export type FieldWithoutIdWithCreatedAt = CreatedAt & FieldWithoutId;
 
 export type FieldWithCreatedAt = CreatedAt & Field;
 
+export type FieldWithCommentAndPhotoAndCreatedAt = Field &
+  CommentAndPhotoAndCreatedAt;
+
 export type Comment = {
   displayName: firebase.UserInfo.displayName;
   photoURL: firebase.UserInfo.photoURL;
@@ -51,27 +54,11 @@ export type Photo = {
   id: number; // NOTE:ランダムで生成したID
 };
 
-export type FieldWithCommentAndPhoto = {
-  id: string;
-  shopName: string;
-  station: string;
-  photoUrls: Array<string>;
-  comment: string;
-  address: string;
-  tel: string;
-  tags: Array<string>;
-  starRating: number;
-  businessHours: string;
-  openOrClose: string;
-  user: User;
-  comments: Array<Comment>; // NOTE:追加
-  photos: Array<Photo>; // NOTE:追加
-  isSaved?: boolean; // NOTE:追加
-  isVisited?: boolean; // NOTE:追加
+export type CommentAndPhotoAndCreatedAt = {
+  createdAt: firebase.firestore.Timestamp;
+  comments: Array<Comment>;
+  photos: Array<Photo>;
 };
-
-export type FieldWithCommentAndPhotoAndCreatedAt = CreatedAt &
-  FieldWithCommentAndPhoto;
 
 export type SavedOrVisitedUser = {
   documents: User;

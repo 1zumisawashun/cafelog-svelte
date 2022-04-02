@@ -11,17 +11,20 @@ const resetErrors = () => {
   isFileTypeError = false;
 };
 
-const handleFile = async ({ target }) => {
+const handleFile = async (e: Event) => {
+  let target = e.target as HTMLInputElement;
   if (target.files === null || target.files.length === 0) {
     return;
   }
-  files = Object.values((target as HTMLInputElement).files).concat();
-  // NOTE:初期化することで同じファイルを連続で選択してもonChagngeが発動するように設定し、画像をキャンセルしてすぐに同じ画像を選ぶ動作に対応
-  target.value = '';
+
+  if (target.files !== null) {
+    // NOTE:Array<File>に整形しコピーする
+    files = [...Object.values(target.files)];
+  }
+  // NOTE:連続で同じ画像をポストする際 handleFile が発火しないので初期化するtarget.value = '';
   resetErrors();
 
   photos = files.filter((file) => {
-    // first validation
     if (!mineType.includes(file.type)) {
       isFileTypeError = true;
       return false;
@@ -32,7 +35,6 @@ const handleFile = async ({ target }) => {
   if (photos.length === 0) {
     return;
   }
-  console.log(photos, 'photos');
   dispatch('change-handler', photos);
 };
 </script>

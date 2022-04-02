@@ -1,15 +1,15 @@
 <script lang="ts">
-export let id;
-export let ready;
+export let id: string;
+export let ready: boolean;
 import ShopDetail from '../components/model/shop/ShopDetail.svelte';
 import { onMount } from 'svelte';
 import Loading from '../components/ui/Loading.svelte';
 import { firebaseUseCase } from '../middleware/firebaseClient';
-import type { FieldWithCommentAndPhoto } from '../@types/index';
+import type { FieldWithCommentAndPhotoAndCreatedAt } from '../@types/index';
 import type { firebase } from '../firebase/config';
 import { dammyCommentData, dammyPhotoData } from '../middleware/constants';
 import { initFirebaseAuth } from '../middleware/authClient';
-let shop: FieldWithCommentAndPhoto;
+let shop: FieldWithCommentAndPhotoAndCreatedAt;
 let user: firebase.User;
 
 onMount(async () => {

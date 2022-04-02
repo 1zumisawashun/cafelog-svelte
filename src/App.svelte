@@ -8,7 +8,7 @@ import Search from './pages/Search.svelte';
 import User from './pages/User.svelte';
 import Shop from './pages/Shop.svelte';
 import Result from './pages/Result.svelte';
-export let ready;
+export let ready: boolean;
 </script>
 
 <svelte:head>

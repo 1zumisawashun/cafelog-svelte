@@ -2,14 +2,17 @@
 import UserTabHeader from './UserTabHeader.svelte';
 import UserTabSaved from './UserTabSaved.svelte';
 import UserTabVisited from './UserTabVisited.svelte';
-import type { SavedOrVisitedShop ,FieldWithCreatedAt} from '../../../@types/index';
+import type {
+  SavedOrVisitedShop,
+  FieldWithCreatedAt,
+} from '../../../@types/index';
 export let savedShops: Array<FieldWithCreatedAt>;
 export let visitedShops: Array<FieldWithCreatedAt>;
 //tabs
 let items = ['Cafe Saved', 'Cafe Visited'];
 let activeItem = 'Cafe Saved';
 
-const tabChange = (e) => {
+const tabChange = (e: CustomEvent) => {
   activeItem = e.detail;
 };
 </script>

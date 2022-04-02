@@ -4,13 +4,11 @@ import {
   subCollectionPoint,
 } from './converter';
 import type {
-  // Field,
   Photo,
   Comment,
   FieldWithCommentAndPhotoAndCreatedAt,
   FieldWithCreatedAt,
   FieldWithoutIdWithCreatedAt,
-  // SavedOrVisitedShop,
   SavedOrVisitedUser,
   User,
   FetchSavedAndVisitedAll,
@@ -24,11 +22,14 @@ class FirebaseUseCase {
    * 全ての shop を取得する
    */
   async fetchAll(uid: string | undefined): Promise<FieldWithCreatedAt[]> {
-    const shopQuery = collectionPoint<FieldWithCreatedAt>('shops');
+    const shopQuery = collectionPoint<FieldWithoutIdWithCreatedAt>('shops');
     const shopSnapshot = await shopQuery.get();
     return await Promise.all(
       shopSnapshot.docs.map(async (doc) => {
-        let result: FetchSavedAndVisitedAll;
+        let result: FetchSavedAndVisitedAll = {
+          savedResult: [],
+          visitedResult: [],
+        };
         if (uid) {
           result = await this.fetchSavedAndVisitedAll(doc.id, uid);
         }
@@ -51,14 +52,17 @@ class FirebaseUseCase {
     uid: string | undefined,
     query: [string, WhereFilterOp, any],
   ): Promise<FieldWithCreatedAt[]> {
-    let shopQuery = collectionPoint<FieldWithCreatedAt>('shops');
+    let shopQuery = collectionPoint<FieldWithoutIdWithCreatedAt>('shops');
     shopQuery = shopQuery.where(
       ...query,
-    ) as firebase.firestore.CollectionReference<FieldWithCreatedAt>;
+    ) as firebase.firestore.CollectionReference<FieldWithoutIdWithCreatedAt>;
     const shopSnapshot = await shopQuery.get();
     return await Promise.all(
       shopSnapshot.docs.map(async (doc) => {
-        let result: FetchSavedAndVisitedAll;
+        let result: FetchSavedAndVisitedAll = {
+          savedResult: [],
+          visitedResult: [],
+        };
         if (uid) {
           result = await this.fetchSavedAndVisitedAll(doc.id, uid);
         }
@@ -80,7 +84,7 @@ class FirebaseUseCase {
     id: string,
     uid: string | undefined,
   ): Promise<FieldWithCommentAndPhotoAndCreatedAt> {
-    const shopQuery = documentPoint<FieldWithCreatedAt>('shops', id);
+    const shopQuery = documentPoint<FieldWithoutIdWithCreatedAt>('shops', id);
     const shopSnapshot = await shopQuery.get();
 
     const commentMap = await this.fetchSubAll<Comment>(
@@ -89,13 +93,16 @@ class FirebaseUseCase {
     const photoMap = await this.fetchSubAll<Photo>(
       convertedPath(`/shops/${id}/photo`),
     );
-    let result: FetchSavedAndVisitedAll;
+    let result: FetchSavedAndVisitedAll = {
+      savedResult: [],
+      visitedResult: [],
+    };
     if (uid) {
       result = await this.fetchSavedAndVisitedAll(id, uid);
     }
     const shopItem: FieldWithCommentAndPhotoAndCreatedAt = {
       id: shopSnapshot.id,
-      ...shopSnapshot.data(),
+      ...(shopSnapshot.data() as FieldWithoutIdWithCreatedAt),// NOTE:アサーションしないと型エラーになる
       isSaved: Boolean(result?.savedResult?.length), // NOTE:Partialしている
       isVisited: Boolean(result?.visitedResult?.length), // NOTE:Partialしている
       comments: commentMap,

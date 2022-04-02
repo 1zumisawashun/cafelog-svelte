@@ -8,7 +8,7 @@ import type { firebase } from '../../firebase/config';
 import ModalConfirm from '../ui/ModalConfirm.svelte';
 import Logo from '../../assets/image/logo.jpg';
 
-let user: firebase.User;
+let user: firebase.User | null = null;
 let setToggleModal: boolean = false;
 
 onMount(() => {

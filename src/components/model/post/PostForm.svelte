@@ -41,11 +41,12 @@ onMount(async () => {
   user = await initFirebaseAuth();
 });
 
-const handleUpload = (e) => {
+// FIXME:カスタムイベントの型定義について調査する
+const handleUpload = (e: CustomEvent) => {
   localPhotos = e.detail;
 };
 
-const handleChange = (e, data) => {
+const handleChange = (e: CustomEvent, data: string) => {
   if (data === 'stars') fields.starRating = e.detail;
   if (data === 'open-or-close') fields.openOrClose = e.detail;
   if (data === 'tags') fields.tags = e.detail;
@@ -77,12 +78,13 @@ const submitHandler = async () => {
   // add post
   if (valid) {
     const { uid, displayName, photoURL, email } = user;
+    if (!email) return;
+
     fields.photoUrls = await getPhotoUrls(localPhotos, uid);
     let post: FieldWithoutId = {
       ...fields,
       user: { uid, displayName, photoURL, email },
     };
-    console.log(post, 'post');
     try {
       firestoreUseCase.addDocument(post);
       openModal();

@@ -7,7 +7,7 @@ import { timestamp } from '../../../firebase/config';
 import { firestoreUseCase } from '../../../middleware/firestoreClient';
 import type { Comment } from '../../../@types/index';
 import ModalError from '../../../components/ui/ModalError.svelte';
-export let id;
+export let id: string;
 export let comments: Array<Comment>;
 
 let setToggleModal = false;
@@ -16,7 +16,9 @@ let comment = '';
 let user: firebase.User;
 
 const unsub = authStore.subscribe((data) => {
-  user = data;
+  if (data) {
+    user = data;
+  }
 });
 
 onMount(async () => {

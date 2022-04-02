@@ -9,23 +9,25 @@ import { timestamp } from '../../../firebase/config';
 import { firestoreUseCase } from '../../../middleware/firestoreClient';
 import { getPhotoUrls } from '../../../middleware/storageClient';
 import ModalError from '../../../components/ui/ModalError.svelte';
-export let id;
+export let id: string;
 export let photos: Array<Photo>;
 
-let localPhotos: Array<File>;
+let localPhotos: Array<File> = [];
 let setToggleModal = false;
 let setToggleModalError: boolean = false;
 let user: firebase.User;
 
 const unsub = authStore.subscribe((data) => {
-  user = data;
+  if (data) {
+    user = data;
+  }
 });
 
 onMount(async () => {
   unsub();
 });
 
-const handleUpload = (e) => {
+const handleUpload = (e: CustomEvent) => {
   localPhotos = e.detail;
 };
 
@@ -40,7 +42,7 @@ const openModal = () => {
 const closeModal = () => {
   setToggleModal = false;
   document.body.style.overflow = '';
-  localPhotos = null;
+  localPhotos = [];
 };
 
 const openModalError = () => {

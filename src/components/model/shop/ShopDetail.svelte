@@ -1,7 +1,7 @@
 <script lang="ts">
-export let ready;
-export let shop;
-export let user;
+export let ready: boolean;
+export let shop: FieldWithCommentAndPhotoAndCreatedAt;
+export let user: firebase.User;
 import ShopComment from './ShopTabComment.svelte';
 import ShopInformationTable from './ShopTabInformation.svelte';
 import Map from './ShopMap.svelte';
@@ -16,16 +16,18 @@ import SaveOffIcon from '../../../assets/icon/icon_save_off.svg';
 import FlagOffIcon from '../../../assets/icon/icon_flag_off.svg';
 import { convertedPath } from '../../../middleware/utilities';
 import ModalError from '../../../components/ui/ModalError.svelte';
+import type { firebase } from '../../../firebase/config';
+import type { FieldWithCommentAndPhotoAndCreatedAt } from '../../../@types/index';
 
 //tabs
 let items = ['Shop Information', 'Shop Comment', 'Shop Photo'];
 let activeItem = 'Shop Information';
 let setToggleModal: boolean = false;
 let setToggleModalError: boolean = false;
-let isSaved: boolean = shop.isSaved;
-let isVisited: boolean = shop.isVisited;
+let isSaved: boolean | undefined = shop.isSaved;
+let isVisited: boolean | undefined = shop.isVisited;
 
-const tabChange = (e) => {
+const tabChange = (e: CustomEvent) => {
   activeItem = e.detail;
 };
 
@@ -63,10 +65,12 @@ const handleVisited = () => {
     return;
   }
   const { displayName, photoURL, uid, email } = user;
+  if (!email) return;
   if (!isVisited) {
     try {
       firestoreUseCase.addSubDocumentWithUserRef(
         { displayName, photoURL, uid, email },
+
         convertedPath(`/shops/${shop.id}/visited/${uid}`),
       );
       firestoreUseCase.addSubDocumentWithShopRef(
@@ -100,6 +104,7 @@ const handleSaved = () => {
     return;
   }
   const { displayName, photoURL, uid, email } = user;
+  if (!email) return;
   if (!isSaved) {
     try {
       firestoreUseCase.addSubDocumentWithUserRef(
@@ -134,7 +139,7 @@ const handleSaved = () => {
 </script>
 
 <div class="shop-detail-container">
-  <img src="{shop.photoUrls}" alt="" class="image" />
+  <img src="{shop.photoUrls[0]}" alt="" class="image" />
   <h1 class="title">{shop.shopName}</h1>
   <div class="button-wrapper _mt-2">
     {#if !isVisited}

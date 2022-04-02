@@ -2,10 +2,10 @@
 import { onMount } from 'svelte';
 
 export let address: string;
-let container;
-let container2;
+let container: any;
+let container2: any;
 
-const initMap = (shopAddress) => {
+const initMap = (shopAddress: string) => {
   const geocoder = new google.maps.Geocoder();
   geocoder.geocode(
     {
@@ -15,6 +15,7 @@ const initMap = (shopAddress) => {
     function (results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
         // 取得した座標をセット緯度経度をセット
+        if (!results) return;
         const map_location = new google.maps.LatLng(
           results[0].geometry.location.lat(),
           results[0].geometry.location.lng(),
@@ -36,7 +37,7 @@ const initMap = (shopAddress) => {
     },
   );
 };
-const successFunc = (position) => {
+const successFunc = (position: any) => {
   var data = position.coords;
   console.log(data);
   // 必要な緯度経度だけ取得
@@ -58,14 +59,15 @@ const successFunc = (position) => {
     map: map,
   });
 };
-const errorFunc = (error) => {
+const errorFunc = (error: any) => {
+  const index: 0 | 1 | 2 | 3 = error.code;
   var errorMessage = {
     0: '原因不明のエラーが発生しました。',
     1: '位置情報が許可されませんでした。',
     2: '位置情報が取得できませんでした。',
     3: 'タイムアウトしました。',
   };
-  alert(errorMessage[error.code]);
+  alert(errorMessage[index]);
 };
 
 onMount(async () => {
