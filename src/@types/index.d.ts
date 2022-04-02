@@ -12,8 +12,6 @@ export type Field = {
   starRating: number;
   businessHours: string;
   openOrClose: string;
-  longitude: string; // 緯度
-  latitude: string; // 経度
   user: User;
   isSaved?: boolean; // NOTE:追加
   isVisited?: boolean; // NOTE:追加
@@ -65,8 +63,6 @@ export type FieldWithCommentAndPhoto = {
   starRating: number;
   businessHours: string;
   openOrClose: string;
-  longitude: string; // 緯度
-  latitude: string; // 経度
   user: User;
   comments: Array<Comment>; // NOTE:追加
   photos: Array<Photo>; // NOTE:追加

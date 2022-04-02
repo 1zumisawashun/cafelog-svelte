@@ -29,8 +29,6 @@ let fields: FieldWithoutIdAndUser = {
   starRating: 0,
   businessHours: '',
   openOrClose: '',
-  longitude: '', // 緯度
-  latitude: '', // 経度
 };
 
 let errors = { shopName: '', station: '', photos: '' };
@@ -148,26 +146,6 @@ const closeModal = () => {
     <div class="form-field">
       <label class="label" for="tel">shop tel</label>
       <input class="input" type="text" id="tel" bind:value="{fields.tel}" />
-    </div>
-
-    <!-- 緯度 -->
-    <div class="form-field">
-      <label class="label" for="longitude">longitude</label>
-      <input
-        class="input"
-        type="text"
-        id="longitude"
-        bind:value="{fields.longitude}" />
-    </div>
-
-    <!-- 経度 -->
-    <div class="form-field">
-      <label class="label" for="latitude">latitude</label>
-      <input
-        class="input"
-        type="text"
-        id="latitude"
-        bind:value="{fields.latitude}" />
     </div>
 
     <div class="form-field">
