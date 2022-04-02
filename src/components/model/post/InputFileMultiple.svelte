@@ -97,4 +97,5 @@ const handleFile = async (e: Event) => {
   id="photos"
   accept="image/*"
   on:change="{handleFile}"
-  multiple />
+  multiple
+  hidden />

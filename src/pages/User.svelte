@@ -30,6 +30,8 @@ const removeReference = (
 
 onMount(async () => {
   const user = await initFirebaseAuth();
+  if (!user) return;
+
   const savedShopsWithRef: Array<SavedOrVisitedShop> =
     await firebaseUseCase.fetchSubAll(
       convertedPath(`/users/${user.uid}/saved`),

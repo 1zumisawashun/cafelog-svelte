@@ -1,13 +1,13 @@
 import { projectAuth, projectFirestore, provider } from '../firebase/config';
 import type { firebase } from '../firebase/config';
 
-export const initFirebaseAuth = (): Promise<firebase.User> => {
+export const initFirebaseAuth = (): Promise<firebase.User | null> => {
   return new Promise((resolve) => {
     const unsubscribe = projectAuth.onAuthStateChanged((user) => {
       // NOTE: user オブジェクトを resolve する
-      if (user) {
-        resolve(user);
-      }
+      // if (user) {
+      resolve(user);
+      // }
       // NOTE:登録解除
       unsubscribe();
     });

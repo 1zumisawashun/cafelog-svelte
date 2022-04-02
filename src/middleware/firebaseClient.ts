@@ -102,7 +102,7 @@ class FirebaseUseCase {
     }
     const shopItem: FieldWithCommentAndPhotoAndCreatedAt = {
       id: shopSnapshot.id,
-      ...(shopSnapshot.data() as FieldWithoutIdWithCreatedAt),// NOTE:アサーションしないと型エラーになる
+      ...(shopSnapshot.data() as FieldWithoutIdWithCreatedAt), // NOTE:アサーションしないと型エラーになる
       isSaved: Boolean(result?.savedResult?.length), // NOTE:Partialしている
       isVisited: Boolean(result?.visitedResult?.length), // NOTE:Partialしている
       comments: commentMap,

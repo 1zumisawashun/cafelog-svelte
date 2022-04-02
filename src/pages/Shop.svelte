@@ -10,7 +10,7 @@ import type { firebase } from '../firebase/config';
 import { dammyCommentData, dammyPhotoData } from '../middleware/constants';
 import { initFirebaseAuth } from '../middleware/authClient';
 let shop: FieldWithCommentAndPhotoAndCreatedAt;
-let user: firebase.User;
+let user: firebase.User | null;
 
 onMount(async () => {
   user = await initFirebaseAuth();

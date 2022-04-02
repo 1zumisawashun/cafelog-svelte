@@ -33,7 +33,7 @@ let fields: FieldWithoutIdAndUser = {
 
 let errors = { shopName: '', station: '', photos: '' };
 let valid = false;
-let user: firebase.User;
+let user: firebase.User | null;
 let localPhotos: Array<File>;
 let setToggleModal: boolean = false;
 
@@ -77,10 +77,12 @@ const submitHandler = async () => {
   }
   // add post
   if (valid) {
+    if (!user) return;
     const { uid, displayName, photoURL, email } = user;
-    if (!email) return;
 
     fields.photoUrls = await getPhotoUrls(localPhotos, uid);
+
+    if (!email) return;
     let post: FieldWithoutId = {
       ...fields,
       user: { uid, displayName, photoURL, email },

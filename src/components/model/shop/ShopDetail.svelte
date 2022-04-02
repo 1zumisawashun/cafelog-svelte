@@ -1,7 +1,7 @@
 <script lang="ts">
 export let ready: boolean;
 export let shop: FieldWithCommentAndPhotoAndCreatedAt;
-export let user: firebase.User;
+export let user: firebase.User | null;
 import ShopComment from './ShopTabComment.svelte';
 import ShopInformationTable from './ShopTabInformation.svelte';
 import Map from './ShopMap.svelte';
