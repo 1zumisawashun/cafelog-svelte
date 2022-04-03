@@ -16,8 +16,7 @@ jobs:
             echo STORAGE_BUCKET=${STORAGE_BUCKET} >> ~/.env
             echo MESSAGING_SENDER_ID=${MESSAGING_SENDER_ID} >> ~/.env
             echo APP_ID=${APP_ID} >> ~/.env
-            ls -al
-            cat .env
+            ls -a
       - run:
           name: npmパッケージをインストールする
           command: |
