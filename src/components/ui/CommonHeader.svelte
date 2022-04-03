@@ -7,6 +7,7 @@ import { projectAuth } from '../../firebase/config';
 import type { firebase } from '../../firebase/config';
 import ModalConfirm from '../ui/ModalConfirm.svelte';
 import Logo from '../../assets/image/logo.jpg';
+import SearchBar from '../ui/SearchBar.svelte';
 
 let user: firebase.User | null = null;
 let setToggleModal: boolean = false;
@@ -55,6 +56,7 @@ const closeModal = () => {
       <img src="{Logo}" alt="" />
     </div>
     <nav class="navbar">
+      <SearchBar />
       <Link to="" class="item">home</Link>
       <Link to="/search" class="item">search</Link>
       {#if user?.uid}

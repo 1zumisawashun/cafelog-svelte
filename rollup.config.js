@@ -64,6 +64,13 @@ export default {
         process.env.MESSAGING_SENDER_ID,
       ),
       'process.env.APP_ID': JSON.stringify(process.env.APP_ID),
+      'process.env.ALGOLIA_APP_ID': JSON.stringify(process.env.ALGOLIA_APP_ID),
+      'process.env.ALGOLIA_ADMIN_API_KEY': JSON.stringify(
+        process.env.ALGOLIA_ADMIN_API_KEY,
+      ),
+      'process.env.ALGOLIA_SEARCH_ONLY_API_KEY': JSON.stringify(
+        process.env.ALGOLIA_SEARCH_ONLY_API_KEY,
+      ),
     }),
     svelte({
       preprocess: sveltePreprocess({
