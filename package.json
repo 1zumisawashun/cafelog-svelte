@@ -11,6 +11,7 @@
     "format": "prettier --write --svelte-sort-order options-scripts-markup-styles ./**/*.svelte"
   },
   "devDependencies": {
+    "@algolia/client-search": "^4.13.0",
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-image": "^2.1.1",
     "@rollup/plugin-node-resolve": "^11.0.0",

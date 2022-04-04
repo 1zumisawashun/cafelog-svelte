@@ -5,9 +5,7 @@ export const initFirebaseAuth = (): Promise<firebase.User | null> => {
   return new Promise((resolve) => {
     const unsubscribe = projectAuth.onAuthStateChanged((user) => {
       // NOTE: user オブジェクトを resolve する
-      // if (user) {
       resolve(user);
-      // }
       // NOTE:登録解除
       unsubscribe();
     });

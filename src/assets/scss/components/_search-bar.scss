@@ -27,6 +27,13 @@
     border-radius: 6px;
     border: 1px solid white;
     margin: 0;
+    caret-color: white;
+    &::placeholder {
+      color: white;
+    }
+    &[type='text'] {
+      color: white;
+    }
   }
 
   > .form-field > .label {
