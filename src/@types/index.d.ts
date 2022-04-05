@@ -13,8 +13,11 @@ export type Field = {
   businessHours: string;
   openOrClose: string;
   user: User;
-  isSaved?: boolean; // NOTE:追加
-  isVisited?: boolean; // NOTE:追加
+  isSaved?: boolean; // NOTE:初期登録時にはポストされない＞初期値としてプロパティ追加した方が良いかも
+  isVisited?: boolean; // NOTE:初期登録時にはポストされない＞初期値としてプロパティ追加した方が良いかも
+  objectID?: string; // NOTE:Algoliaで追加される余分なプロパティ
+  lastmodified?: number; // NOTE:Algoliaで追加される余分なプロパティ
+  path?: string; // NOTE:Algoliaで追加される余分なプロパティ
 };
 
 export type User = {
@@ -23,8 +26,14 @@ export type User = {
   uid: string;
   email: string;
 };
+
 export type CreatedAt = {
   createdAt: firebase.firestore.Timestamp;
+};
+
+// NOTE:Algoliaで取得できるcreatedAtはnumberのため作成
+export type CreatedAtNumber = {
+  createdAt: number;
 };
 
 export type FieldWithoutId = Omit<Field, 'id'>;
@@ -32,6 +41,10 @@ export type FieldWithoutId = Omit<Field, 'id'>;
 export type FieldWithoutIdAndUser = Omit<Field, 'id' | 'user'>;
 
 export type FieldWithoutIdWithCreatedAt = CreatedAt & FieldWithoutId;
+
+// NOTE:Algoliaで取得できるcreatedAtはnumberのため作成
+export type FieldWithoutIdWithCreatedAtNumber = CreatedAtNumber &
+  FieldWithoutId;
 
 export type FieldWithCreatedAt = CreatedAt & Field;
 

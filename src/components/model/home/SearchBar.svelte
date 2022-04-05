@@ -1,12 +1,30 @@
 <script lang="ts">
 import { querySearch } from '../../../middleware/algoliaClient';
+import { shopStore } from '../../../store/shopStore';
+import { timestamp } from '../../../firebase/config';
 let query: string = '';
 
 const handleInput = async (e: Event) => {
   let target = e.target as HTMLInputElement;
-  console.log(target.value);
   const result = await querySearch(target.value);
-  console.log(result, 'result of algolia');
+  const formatAlgoliaHits = result.hits.map((el) => {
+    const { objectID, path, lastmodified, createdAt, ...rest } = el;
+    return {
+      id: objectID,
+      createdAt: timestamp.fromDate(new Date(createdAt)),
+      ...rest,
+    };
+  });
+
+  // NOTE:配列からnullableを排除する
+  const removeNullable = formatAlgoliaHits.filter(
+    (item): item is NonNullable<typeof item> => item !== null,
+  );
+
+  shopStore.update((currentShops) => {
+    // NOTE:スプレッド構文で同じオブジェクトは上書きされる？
+    return [...currentShops, ...removeNullable];
+  });
 };
 </script>
 
@@ -16,7 +34,7 @@ const handleInput = async (e: Event) => {
     class="input"
     type="text"
     id="query"
-    placeholder="shopname or station ..."
+    placeholder="shop, station, location and so on..."
     bind:value="{query}"
     on:input="{handleInput}" />
 </div>
