@@ -13,8 +13,7 @@ onMount(async () => {
   const user = await initFirebaseAuth();
   shops = await firebaseUseCase.fetchAll(user?.uid);
   shopStore.update((currentShops) => {
-    // NOTE:スプレッド構文で同じオブジェクトは上書きされる？
-    return [...currentShops, ...shops];
+    return (currentShops = shops);
   });
 });
 </script>

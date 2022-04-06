@@ -22,8 +22,7 @@ const handleInput = async (e: Event) => {
   );
 
   shopStore.update((currentShops) => {
-    // NOTE:スプレッド構文で同じオブジェクトは上書きされる？
-    return [...currentShops, ...removeNullable];
+    return (currentShops = removeNullable);
   });
 };
 </script>
