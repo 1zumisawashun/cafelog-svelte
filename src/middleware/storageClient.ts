@@ -29,4 +29,20 @@ const getPhotoUrls = async (
   return result;
 };
 
-export { getPhotoUrls };
+// NOTE:画像の縮小をしないために作成
+const getUrls = async (
+  photosList: Array<File>,
+  uid: string,
+): Promise<string[]> => {
+  const promises = photosList.map(async (file): Promise<string> => {
+    const uploadPath = `photos/${uid}/${file.name}`;
+    const img = await projectStorage.ref(uploadPath).put(file);
+    const imgUrl = await img.ref.getDownloadURL();
+    return imgUrl;
+  });
+  console.log('getUrlが動いている');
+  const result = await Promise.all(promises);
+  return result;
+};
+
+export { getPhotoUrls, getUrls };
