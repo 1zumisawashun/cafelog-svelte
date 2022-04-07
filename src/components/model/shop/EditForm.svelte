@@ -1,48 +1,36 @@
 <script lang="ts">
-import { onMount } from 'svelte';
-import { navigate } from 'svelte-routing';
-import InputFileMultiple from './InputFileMultiple.svelte';
-import InputRadio from './InputRadio.svelte';
-import InputCheckbox from './InputCheckbox.svelte';
-import type { firebase } from '../../../firebase/config';
+import InputFileMultiple from '../post/InputFileMultiple.svelte';
+import InputRadio from '../post/InputRadio.svelte';
+import InputCheckbox from '../post/InputCheckbox.svelte';
 import type {
   FieldWithoutIdAndUser,
   FieldWithoutId,
+  User,
 } from '../../../@types/index';
-import ModalMessage from '../../ui/ModalMessage.svelte';
-import { firestoreUseCase } from '../../../middleware/firestoreClient';
 import { getPhotoUrls } from '../../../middleware/storageClient';
-import { initFirebaseAuth } from '../../../middleware/authClient';
+import { createEventDispatcher } from 'svelte';
+let dispatch = createEventDispatcher();
 
 const tags = ['wifi', 'date', 'study', 'reserve', 'stand', 'alone'];
 const stars = [1, 2, 3, 4, 5];
 const openOrClose = ['開店', '閉店'];
 
-let fields: FieldWithoutIdAndUser = {
-  shopName: '',
-  station: '',
-  photoUrls: [],
-  comment: '',
-  address: '',
-  tel: '',
-  tags: [],
-  starRating: 0,
-  businessHours: '',
-  openOrClose: '',
-};
-
 let errors = { shopName: '', station: '', photos: '' };
 let valid = false;
-let user: firebase.User | null;
-let localPhotos: Array<File>;
-let setToggleModal: boolean = false;
+let localPhotos: Array<File | string> = [];
+export let user: User;
+export let fields: FieldWithoutIdAndUser;
 
-onMount(async () => {
-  user = await initFirebaseAuth();
-});
+$: stringItems = localPhotos.filter(
+  (item): item is string => typeof item === 'string',
+);
+$: fileItems = localPhotos.filter(
+  (item): item is File => typeof (item as File).size === 'number',
+);
 
 // FIXME:カスタムイベントの型定義について調査する
 const handleUpload = (e: CustomEvent) => {
+  console.log(e.detail, 'handle upload');
   localPhotos = e.detail;
 };
 
@@ -77,41 +65,30 @@ const submitHandler = async () => {
   }
   // add post
   if (valid) {
-    if (!user) return;
-    const { uid, displayName, photoURL, email } = user;
+    const results = await getPhotoUrls(fileItems, user.uid);
+    fields.photoUrls = [...results, ...stringItems];
 
-    fields.photoUrls = await getPhotoUrls(localPhotos, uid);
-
-    if (!email) return;
     let post: FieldWithoutId = {
       ...fields,
-      user: { uid, displayName, photoURL, email },
+      user,
     };
     try {
-      firestoreUseCase.addDocument(post);
-      openModal();
+      dispatch('click-handler', post);
+      dispatch('close-modal');
     } catch (error) {
       console.log(error);
     }
   }
 };
-
-const openModal = () => {
-  setToggleModal = true;
-  document.body.style.overflow = 'hidden';
-};
-
 const closeModal = () => {
-  setToggleModal = false;
-  document.body.style.overflow = '';
-  navigate('/', { replace: true });
+  dispatch('close-modal');
 };
 </script>
 
-<div class="post-form-container">
+<div class="post-form-container -w90">
   <div class="form">
     <InputFileMultiple
-      photos="{localPhotos}"
+      photos="{fields.photoUrls}"
       on:change-handler="{handleUpload}" />
     <div class="error">{errors.photos}</div>
     <!-- 名前 -->
@@ -185,13 +162,8 @@ const closeModal = () => {
     </div>
 
     <div class="button-wrapper">
-      <button on:click="{submitHandler}" class="btn">Post</button>
+      <button on:click="{submitHandler}" class="btn -mw150 -inverse">更新する</button>
+      <button on:click="{closeModal}" class="btn -mw150">閉じる</button>
     </div>
   </div>
 </div>
-
-{#if setToggleModal}
-  <div class="common-container">
-    <ModalMessage on:close-modal="{closeModal}" />
-  </div>
-{/if}

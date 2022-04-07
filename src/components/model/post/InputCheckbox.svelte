@@ -2,7 +2,7 @@
 // NOTE:複数選択から1つ以上を選ぶ場合はcheckboxを使う
 export let items: Array<number | string> = [];
 export let name: string = '';
-let selections: Array<string> = [];
+export let selections: Array<string> = [];
 import { createEventDispatcher } from 'svelte';
 let dispatch = createEventDispatcher();
 

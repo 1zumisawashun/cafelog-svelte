@@ -3,11 +3,19 @@ import { createEventDispatcher } from 'svelte';
 import { mineType } from '../../../middleware/constants';
 let dispatch = createEventDispatcher();
 
-export let photos: Array<File> = [];
+export let photos: Array<File | string> = [];
 let isSameError: boolean = false;
 let isNumberError: boolean = false;
 let isFileTypeError: boolean = false;
 let files: Array<File>;
+
+$: stringItems = photos.filter(
+  (item): item is string => typeof item === 'string',
+);
+$: fileItems = photos.filter(
+  (item): item is File => typeof (item as File).size === 'number',
+);
+$: dammyItems = 3 - photos.length;
 
 const resetErrors = () => {
   isSameError = false;
@@ -34,7 +42,8 @@ const handleFile = async (e: Event) => {
       isFileTypeError = true;
       return false;
     }
-    const existsSameSize = photos.some((photo) => photo.size === file.size);
+    // NOTE:urlとFileが同じ場合は判別の使用がないのでスルーする
+    const existsSameSize = fileItems.some((photo) => photo.size === file.size);
     if (existsSameSize) {
       isSameError = true;
       return false;
@@ -57,21 +66,33 @@ const handleFile = async (e: Event) => {
 </script>
 
 <div class="input-file-multiple-container -scroll">
-  {#each [...Array(3)] as _, index}
+  {#each fileItems as item, index}
     <div>
       <div class="wrapper">
-        {#if photos[index]}
-          <img
-            src="{URL.createObjectURL(photos[index])}"
-            alt="{`あなたの写真 ${index + 1}`}"
-            width="150"
-            class="image" />
-        {:else}
-          <label class="wrapper" for="photos">
-            <img src="https://placehold.jp/150x200.png" alt="" class="image" />
-          </label>
-        {/if}
+        <img
+          src="{URL.createObjectURL(item)}"
+          alt="{`あなたの写真 ${index + 1}`}"
+          width="150"
+          class="image" />
       </div>
+    </div>
+  {/each}
+  {#each stringItems as item, index}
+    <div>
+      <div class="wrapper">
+        <img
+          src="{item}"
+          alt="{`あなたの写真 ${index + 1}`}"
+          width="150"
+          class="image" />
+      </div>
+    </div>
+  {/each}
+  {#each [...Array(dammyItems)] as _, index}
+    <div>
+      <label class="wrapper" for="photos">
+        <img src="https://placehold.jp/150x200.png" alt="" class="image" />
+      </label>
     </div>
   {/each}
 </div>

@@ -17,15 +17,34 @@ import FlagOffIcon from '../../../assets/icon/icon_flag_off.svg';
 import { convertedPath } from '../../../middleware/utilities';
 import ModalError from '../../../components/ui/ModalError.svelte';
 import type { firebase } from '../../../firebase/config';
-import type { FieldWithCommentAndPhotoAndCreatedAt } from '../../../@types/index';
+import type {
+  FieldWithCommentAndPhotoAndCreatedAt,
+  FieldWithoutIdAndUser,
+} from '../../../@types/index';
+import ShopModalForm from './ShopModalForm.svelte';
+import EditForm from './EditForm.svelte';
 
 //tabs
 let items = ['Shop Information', 'Shop Comment', 'Shop Photo'];
 let activeItem = 'Shop Information';
 let setToggleModal: boolean = false;
+let setToggleModalEdit: boolean = false;
 let setToggleModalError: boolean = false;
 let isSaved: boolean | undefined = shop.isSaved;
 let isVisited: boolean | undefined = shop.isVisited;
+
+let fields: FieldWithoutIdAndUser = {
+  shopName: shop.shopName,
+  station: shop.station,
+  photoUrls: shop.photoUrls,
+  comment: shop.comment,
+  address: shop.address,
+  tel: shop.tel,
+  tags: shop.tags,
+  starRating: shop.starRating,
+  businessHours: shop.businessHours,
+  openOrClose: shop.openOrClose,
+};
 
 const tabChange = (e: CustomEvent) => {
   activeItem = e.detail;
@@ -35,12 +54,13 @@ const handleDelete = () => {
   firestoreUseCase.deleteDocument(shop.id);
   navigate('/', { replace: true });
 };
-
+// 本当に削除しますかモーダル
 const openModal = () => {
   if (!user) {
     openModalError();
     return;
   }
+  // userの特定をする必要がある
   setToggleModal = true;
   document.body.style.overflow = 'hidden';
 };
@@ -49,6 +69,24 @@ const closeModal = () => {
   setToggleModal = false;
   document.body.style.overflow = '';
 };
+
+// 編集フォームモーダル
+const openModalEdit = () => {
+  if (!user) {
+    openModalError();
+    return;
+  }
+  // userの特定をする必要がある
+  setToggleModalEdit = true;
+  document.body.style.overflow = 'hidden';
+};
+
+const closeModalEdit = () => {
+  setToggleModalEdit = false;
+  document.body.style.overflow = '';
+};
+
+// ログインしてくださいモーダル
 const openModalError = () => {
   setToggleModalError = true;
   document.body.style.overflow = 'hidden';
@@ -136,6 +174,10 @@ const handleSaved = () => {
     }
   }
 };
+const handleEdit = (e: CustomEvent) => {
+  console.log('edit', e.detail);
+  // update firestore
+};
 </script>
 
 <div class="shop-detail-container">
@@ -165,6 +207,7 @@ const handleSaved = () => {
       </button>
     {/if}
     <button class="btn" on:click="{openModal}">削除</button>
+    <button class="btn" on:click="{openModalEdit}">編集</button>
   </div>
   <div class="_mt-2">
     <ShopTabHeader
@@ -186,14 +229,18 @@ const handleSaved = () => {
   </div>
   {#if setToggleModal}
     <ModalConfirm
-      on:click-handler="{handleDelete}"
-      on:close-modal="{closeModal}">
+      on:close-modal="{closeModal}"
+      on:click-handler="{handleDelete}">
       <p class="message">本当に削除しますか？</p>
     </ModalConfirm>
   {/if}
-  {#if setToggleModalError}
-    <ModalError on:close-modal="{closeModalError}">
-      <p class="message">ログインしてください</p>
-    </ModalError>
+  {#if setToggleModalEdit}
+    <ShopModalForm size="-large" hide="-hidden">
+      <EditForm
+        fields="{fields}"
+        user="{shop.user}"
+        on:close-modal="{closeModalEdit}"
+        on:click-handler="{handleEdit}" />
+    </ShopModalForm>
   {/if}
 </div>

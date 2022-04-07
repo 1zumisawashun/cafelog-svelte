@@ -2,7 +2,7 @@
 // NOTE:複数選択から1つ選ぶ場合はradioを使う
 export let items: Array<number | string> = [];
 export let name: string = '';
-let selection: string = '';
+export let selection: string | number;
 import { createEventDispatcher } from 'svelte';
 let dispatch = createEventDispatcher();
 
