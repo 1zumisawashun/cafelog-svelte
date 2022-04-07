@@ -82,8 +82,11 @@ const postPhoto = async () => {
 </div>
 
 {#if setToggleModal}
-  <ShopModalForm on:close-modal="{closeModal}" on:click-handler="{postPhoto}">
-    <div class="post-form-container">
+  <ShopModalForm
+    on:close-modal="{closeModal}"
+    on:click-handler="{postPhoto}"
+    size="-medium">
+    <div class="post-form-container -w90">
       <div class="form">
         <InputFileSingle
           photos="{localPhotos}"

@@ -41,7 +41,7 @@ const handleFile = async (e: Event) => {
 
 <div class="input-file-multiple-container -center">
   <div>
-    <div class="wrapper">
+    <div class="wrapper _mb-0">
       {#if photos[0]}
         <img
           src="{URL.createObjectURL(photos[0])}"

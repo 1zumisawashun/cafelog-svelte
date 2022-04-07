@@ -83,8 +83,11 @@ const postComment = () => {
 </div>
 
 {#if setToggleModal}
-  <ShopModalForm on:close-modal="{closeModal}" on:click-handler="{postComment}">
-    <div class="post-form-container">
+  <ShopModalForm
+    on:close-modal="{closeModal}"
+    on:click-handler="{postComment}"
+    size="-medium">
+    <div class="post-form-container -w90">
       <div class="form">
         <div class="form-field">
           <label class="label" for="comment">comment</label>

@@ -17,6 +17,9 @@
     transform: translate(-50%, -50%);
     z-index: 10;
     text-align: center;
+    &.-scroll {
+      overflow-y: scroll;
+    }
     &.-form {
       background-color: white;
       padding: 5rem 3rem;
@@ -29,9 +32,15 @@
     }
     &.-small {
       width: 400px;
+      max-height: 200px;
     }
     &.-medium {
-      width: 500px;
+      width: 600px;
+      max-height: 400px;
+    }
+    &.-large {
+      width: 800px;
+      max-height: 600px;
     }
   }
   > .wrapper > .message {

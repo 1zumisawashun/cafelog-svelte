@@ -1,6 +1,9 @@
 .post-form-container {
   width: 50%;
   margin: 0 auto;
+  &.-w90 {
+    width: 90%;
+  }
 
   > .form {
     text-align: center;
