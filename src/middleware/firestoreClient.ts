@@ -163,10 +163,13 @@ class FirestoreUseCase {
   /**
    * ドキュメントの更新
    */
-  async updateDocument(id: string, doc: any) {
-    let shopQuery = documentPoint<Field>('shops', id);
+  async updateDocument(id: string, doc: FieldWithoutId) {
+    let shopQuery = documentPoint<FieldWithoutIdWithCreatedAt>('shops', id);
     try {
-      shopQuery.update(doc);
+      shopQuery.update({
+        createdAt: timestamp.fromDate(new Date()),
+        ...doc,
+      });
     } catch (error) {
       if (error instanceof Error) {
         console.log(error);

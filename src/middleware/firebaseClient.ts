@@ -19,7 +19,7 @@ import { convertedPath } from '../middleware/utilities';
 class FirebaseUseCase {
   /**
    * 参照①（未ログインユーザも参照する）
-   * 全ての shop を取得する
+   * 全ての shop を取得する（ファーストビューを Algolia から取得しているため未使用_20220408）
    */
   async fetchAll(uid: string | undefined): Promise<FieldWithCreatedAt[]> {
     const shopQuery = collectionPoint<FieldWithoutIdWithCreatedAt>('shops');

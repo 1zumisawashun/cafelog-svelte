@@ -67,7 +67,6 @@ const submitHandler = async () => {
   if (valid) {
     const results = await getPhotoUrls(fileItems, user.uid);
     fields.photoUrls = [...results, ...stringItems];
-
     let post: FieldWithoutId = {
       ...fields,
       user,
@@ -162,7 +161,8 @@ const closeModal = () => {
     </div>
 
     <div class="button-wrapper">
-      <button on:click="{submitHandler}" class="btn -mw150 -inverse">更新する</button>
+      <button on:click="{submitHandler}" class="btn -mw150 -inverse"
+        >更新する</button>
       <button on:click="{closeModal}" class="btn -mw150">閉じる</button>
     </div>
   </div>

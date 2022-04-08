@@ -54,52 +54,32 @@ const handleDelete = () => {
   firestoreUseCase.deleteDocument(shop.id);
   navigate('/', { replace: true });
 };
-// 本当に削除しますかモーダル
-const openModal = () => {
-  if (!user) {
-    openModalError();
+
+const handleEdit = (e: CustomEvent) => {
+  firestoreUseCase.updateDocument(shop.id, e.detail);
+  navigate('/', { replace: true });
+};
+
+const handleOpenModal = (data: string) => {
+  document.body.style.overflow = 'hidden';
+  if (user) {
+    if (data === 'delete') setToggleModal = true;
+    if (data === 'edit') setToggleModalEdit = true;
     return;
   }
-  // userの特定をする必要がある
-  setToggleModal = true;
-  document.body.style.overflow = 'hidden';
-};
-
-const closeModal = () => {
-  setToggleModal = false;
-  document.body.style.overflow = '';
-};
-
-// 編集フォームモーダル
-const openModalEdit = () => {
-  if (!user) {
-    openModalError();
-    return;
-  }
-  // userの特定をする必要がある
-  setToggleModalEdit = true;
-  document.body.style.overflow = 'hidden';
-};
-
-const closeModalEdit = () => {
-  setToggleModalEdit = false;
-  document.body.style.overflow = '';
-};
-
-// ログインしてくださいモーダル
-const openModalError = () => {
   setToggleModalError = true;
-  document.body.style.overflow = 'hidden';
 };
 
-const closeModalError = () => {
-  setToggleModalError = false;
+const handleCloseModal = (data: string) => {
+  if (data === 'delete') setToggleModal = false;
+  if (data === 'edit') setToggleModalEdit = false;
+  if (data === 'user') setToggleModalError = false;
   document.body.style.overflow = '';
 };
 
 const handleVisited = () => {
   if (!user) {
-    openModalError();
+    handleOpenModal('user');
     return;
   }
   const { displayName, photoURL, uid, email } = user;
@@ -138,7 +118,7 @@ const handleVisited = () => {
 };
 const handleSaved = () => {
   if (!user) {
-    openModalError();
+    handleOpenModal('user');
     return;
   }
   const { displayName, photoURL, uid, email } = user;
@@ -174,10 +154,6 @@ const handleSaved = () => {
     }
   }
 };
-const handleEdit = (e: CustomEvent) => {
-  console.log('edit', e.detail);
-  // update firestore
-};
 </script>
 
 <div class="shop-detail-container">
@@ -206,8 +182,9 @@ const handleEdit = (e: CustomEvent) => {
         <span class="text -orenge">保存する</span>
       </button>
     {/if}
-    <button class="btn" on:click="{openModal}">削除</button>
-    <button class="btn" on:click="{openModalEdit}">編集</button>
+    <button class="btn" on:click="{() => handleOpenModal('delete')}"
+      >削除</button>
+    <button class="btn" on:click="{() => handleOpenModal('edit')}">編集</button>
   </div>
   <div class="_mt-2">
     <ShopTabHeader
@@ -229,7 +206,7 @@ const handleEdit = (e: CustomEvent) => {
   </div>
   {#if setToggleModal}
     <ModalConfirm
-      on:close-modal="{closeModal}"
+      on:close-modal="{() => handleCloseModal('delete')}"
       on:click-handler="{handleDelete}">
       <p class="message">本当に削除しますか？</p>
     </ModalConfirm>
@@ -239,8 +216,13 @@ const handleEdit = (e: CustomEvent) => {
       <EditForm
         fields="{fields}"
         user="{shop.user}"
-        on:close-modal="{closeModalEdit}"
+        on:close-modal="{() => handleCloseModal('edit')}"
         on:click-handler="{handleEdit}" />
     </ShopModalForm>
+  {/if}
+  {#if setToggleModalError}
+    <ModalError on:close-modal="{() => handleCloseModal('user')}">
+      <p class="message">ログインしてください</p>
+    </ModalError>
   {/if}
 </div>
