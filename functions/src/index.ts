@@ -1,7 +1,8 @@
 import * as functions from 'firebase-functions';
 import { Request, Response } from 'express';
 import * as express from 'express';
-// const logActivities = require('./utilities/logger');
+import { logActivities } from './utilities/logger';
+import { deleteAlgolia } from './utilities/algoliaClient';
 
 // Start writing Firebase Functions
 // https://firebase.google.com/docs/functions/typescript
@@ -19,4 +20,4 @@ app.get('/hello', (req: Request, res: Response) => {
 
 const api = functions.https.onRequest(app);
 
-module.exports = { api, helloWorld };
+module.exports = { api, helloWorld, deleteAlgolia, logActivities };
